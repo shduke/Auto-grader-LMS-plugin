@@ -75,9 +75,10 @@ your APT on the submit page (back on the previous page).
 
 $course = "compsci101";    # this was "newapt"
 $apturl = "http://www.cs.duke.edu/csed/pythonapt/";
+$apturl = "http://localhost:8888/apt_files";
 $name= "apt.txt";
 $upload="https://cgi.cs.duke.edu/~ola/";
-#$upload="";
+$upload="";
 
 #below here doesn't need to change?
 

@@ -87,11 +87,12 @@ else {
 function checkfile($fname){
    global $imports_array;
 
-   $file = fopen($fname,"r");
+   $file = fopen(__DIR__.'/'.$fname,"r");
+   if (! $file ) die("Unable to open $fname");
    while (!feof($file)){
       $line = fgets($file);
       $chunks = preg_split("/[\s,]+/",$line);
-      if (count(chunks) > 0){
+      if (count($chunks) > 0){
           if ($chunks[0] == 'import'){
               foreach ($chunks as $imp) {
                   $imp = trim($imp);
@@ -212,11 +213,11 @@ if ($user != "anonymous user"){
    echo "<ul>";
    echo "<li> netid is ".$netid."</li>";
 }
-if (!$gradehandle = fopen($gradelog,'a')){
+if (!$gradehandle = fopen(__DIR__.'/'.$gradelog,'a')){
     echo "could not open grade log file $gradelog<P>";
 }
 
-if (!$handle = fopen($log,'a')){
+if (!$handle = fopen(__DIR__.'/'.$log,'a')){
     echo "could not open log file $log<P>";
 }
 else {

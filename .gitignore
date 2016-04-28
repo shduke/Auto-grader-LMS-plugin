@@ -1,0 +1,6 @@
+*.swp
+
+apt/gradelog
+apt/incoming
+apt/log
+
