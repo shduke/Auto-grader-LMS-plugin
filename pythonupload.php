@@ -1,4 +1,9 @@
 <?php
+    require_once "config.php";
+    use \Tsugi\Core\LTIX;
+
+    $LAUNCH = LTIX::session_start();
+
 ob_start();
 $user="none";
 if (isset($_COOKIE['apt'])){
@@ -54,6 +59,9 @@ echo  "<link rel=\"stylesheet\" type=\"text/css\" href=\"topstyle.css\">\n";
 echo  "</head>\n";
 echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
 echo  "<h1>Submitting for Grading ".$problem."</h1>";
+if ( isset($USER->displayname) ) {
+    echo("<p>Hello ".$USER->displayname."</p>\n");
+}
 echo  "<b>Problem</b>: ". $problem. "<br>\n";
 echo  "<b>Language</b>: ". $language. "<br>\n";
 echo  "<b>Files</b>: ";
@@ -61,7 +69,9 @@ echo  $filename;
 echo  "<br>Number of APT runs this session is: ".$runs."<P>";
 
 $user = "anonymous user";
-if (isset($_SERVER['REMOTE_USER'])) {
+if ( isset($LAUNCH->user->email) ) {
+    $user = $LAUNCH->user->email;
+} else if (isset($_SERVER['REMOTE_USER'])) {
     $user = $_SERVER['REMOTE_USER'];
 }
 echo "user is: ".$user."<P>";
@@ -207,6 +217,13 @@ if ($perc == "ok") {
 
 $netid = "";
 $probdir = "";
+
+if ( isset($LAUNCH->result) ) {
+    $gradetosend = $perc+0.0;
+    $retval = $LAUNCH->result->gradeSend($gradetosend);
+    echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
+}
+
 if ($user != "anonymous user"){
    $netid = substr($user,0,strpos($user,"@"));
    echo "<h2>Logging Results for ".$problem."</h2>";

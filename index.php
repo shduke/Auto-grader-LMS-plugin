@@ -1,4 +1,9 @@
 <?php
+    require_once "config.php";
+    use \Tsugi\Core\LTIX;
+
+    $LAUNCH = LTIX::session_start();
+
    $title = "APTs";
 ?>
 
@@ -27,6 +32,11 @@ TH{
 
 <h1>APTs</h1>
 
+<?php
+    if ( isset($USER->displayname) ) {
+        echo("<p>Hello ".$USER->displayname."</p>\n");
+    }
+?>
 
 <p> For each problem  in an APT set, complete these steps by the due date 
 <ul>

@@ -1,3 +1,9 @@
+<?php
+    require_once "config.php";
+    use \Tsugi\Core\LTIX;
+
+    $LAUNCH = LTIX::session_start();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -66,6 +72,11 @@ body {
   <body>
 
     <h1>APT Grading: CompSci 101, Spring 2016</h1>
+<?php
+    if ( isset($USER->displayname) ) {
+        echo("<p>Hello ".$USER->displayname."</p>\n");
+    }
+?>
 <P>
 This is the webpage for <em>grading and submitting</em> your APTs.
 You should have already tested using the
@@ -77,9 +88,10 @@ a secure/netid authenticated login.
 <?php
 $course = "compsci101";    # this was "newapt"
 $apturl = "http://www.cs.duke.edu/csed/pythonapt/";
+$apturl = "http://localhost:8888/apt_files";
 $name= "apt.txt";
 $upload="https://cgi.cs.duke.edu/~ola/aptsec/";
-#$upload="";
+$upload="";
 
 #below here doesn't need to change?
 
