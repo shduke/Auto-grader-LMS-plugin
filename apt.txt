@@ -1,0 +1,3 @@
+# First APTs are due on Jan 28, do them all
+grayscale:Grayscale:grayscale.html
+bmi:BMI:bmi.html:together in class
