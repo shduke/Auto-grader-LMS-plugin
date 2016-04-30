@@ -1,0 +1,19 @@
+body {
+  padding: 20px;
+}
+
+.pass {
+  background-color: #2ecc71;
+}
+
+.fail {
+  background-color: #c0392b;
+}
+
+.center{
+  text-align: center;
+}
+
+.label{
+  margin: 5px;
+}

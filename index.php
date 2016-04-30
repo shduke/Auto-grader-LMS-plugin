@@ -7,30 +7,26 @@
    $title = "APTs";
 ?>
 
+<html>
+  <head>
+    <link rel="stylesheet" href="topstyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+      body{
+        font-size: 16px;
+      }
+      #index-header{
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
 
-<style>
-<!--
-TABLE {
-   border: 1px solid black;
-   border-collapse: collapse;
-   empty-cells: show;
-}
-TD{
-   border: 1px solid black;
-   padding: 3px;
-}
-TH{
-   border: 1px solid black;
-   padding: 5px;
-}
+<div class="container">
 
--->
-</style>
-
-
-<hr>
-
-<h1>APTs</h1>
+<div class="center">
+  <h1 id = "index-header">APTs</h1>
+</div>
 
 <?php
     if ( isset($USER->displayname) ) {
@@ -38,38 +34,38 @@ TH{
     }
 ?>
 
-<p> For each problem  in an APT set, complete these steps by the due date 
+<p> For each problem  in an APT set, complete these steps by the due date
 <ul>
-<li> first test it and get it working correctly using the <strong>Test 
-</strong> link 
+<li> first test it and get it working correctly using the <strong>Test
+</strong> link
 <li> then submit the code for grading  using the <strong>Submit
 </strong>  link
-<li> <strong>check your grade </strong> on the grade code page 
+<li> <strong>check your grade </strong> on the grade code page
 by clicking on <strong>check submissions</strong>
 <li> then fill out the README form
 </ul>
 
 <p> In solving APTs, your program should work for all cases, not just the
-test cases we provide. We may test your program on additional data. 
+test cases we provide. We may test your program on additional data.
 
 <p>
-<table>
+<table class = "table table-bordered">
 <tr> <th> APT </th> <th>Test code  </th> <th> Grade code </th> <th> Finish it
 </th>
 <th> Due Date </th>
 </tr>
-<tr> 
-<td> 
-<em>APT 1</em> 
-</td> 
-<td> <a 
+<tr>
+<td>
+<em>APT 1</em>
+</td>
+<td> <a
 href="apt_test.php"> Test </a>
 </td>
 <td> <a
 href="apt_submit.php"> Submit
 </a>
 </td>
-<td> 
+<td>
 <a href="http://goo.gl/forms/3IWpxnYfSN"> README </a>
 </td>
 <td> Jan 28 </td>
@@ -79,9 +75,13 @@ href="apt_submit.php"> Submit
 
 <p>
 We may do some APTs partially in class or lab, but you still have to do
-them and submit them. 
+them and submit them.
 There will usually be extra apts listed. You can do more than required to
-challenge yourself. We do notice 
-if you do more APTs than those required. 
-If you do extra APTs, they still have to be turned in on the due date. 
+challenge yourself. We do notice
+if you do more APTs than those required.
+If you do extra APTs, they still have to be turned in on the due date.
 
+</div> <!-- Container end -->
+
+</body>
+</head>

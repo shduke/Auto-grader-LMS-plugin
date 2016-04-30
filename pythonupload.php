@@ -55,17 +55,26 @@ $filename = basename($_FILES['upfile']['name']);
 $ipaddress = $_SERVER['REMOTE_ADDR'];
 
 echo "<html><head><title>APT: $problem</title>\n";
-echo  "<link rel=\"stylesheet\" type=\"text/css\" href=\"topstyle.css\">\n";
+?>
+
+<link rel="stylesheet" type="text/css" href="topstyle.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<?php
 echo  "</head>\n";
 echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
-echo  "<h1>Submitting for Grading ".$problem."</h1>";
+echo "<div class = 'container'>";
+echo  "<div class = \"center\"><h1>Submitting for Grading ".$problem."</h1>";
 if ( isset($USER->displayname) ) {
     echo("<p>Hello ".$USER->displayname."</p>\n");
 }
-echo  "<b>Problem</b>: ". $problem. "<br>\n";
-echo  "<b>Language</b>: ". $language. "<br>\n";
-echo  "<b>Files</b>: ";
-echo  $filename;
+echo  "<span class=\"label label-default\">Problem: ". $problem. "</span>";
+echo  "<span class=\"label label-primary\">Language: " .$language. "</span>";
+echo  "<span class=\"label label-success\">Files: " .$filename. "</span></div>";
+
+echo "<hr><pre>";
 echo  "<br>Number of APT runs this session is: ".$runs."<P>";
 
 $user = "anonymous user";
@@ -115,8 +124,6 @@ function checkfile($fname){
    }
    return "Yes";
 }
-
-
 
 $probdir = $input_directory."/".$problem;
 if (!file_exists($probdir."/Tester.py")) {
@@ -194,16 +201,61 @@ if ($perc == "ok") {
     echo "compile succeeded";
     echo "<P><b>Program running:</b> standard output below";
     echo "<P>(if you don't see output immediately, wait ... your<br>";
-    echo "code may have time-limit exceeded problems)<br><hr><pre>\n";
+    echo "code may have time-limit exceeded problems)<br>\n";
     usleep(100);
     ob_flush();
     flush();
     #$line = system("/usr/local/bin/python Tester.py > $problem.out");
     $line = system("python Tester.py > $problem.out");
     passthru("cat $problem.out");
-    echo "</pre><hr><P>\n";
+    echo "<P>\n";
     echo "<b>Test Results Follow (scroll to see all)</b><p>";
-    echo "<table class=border\n";
+
+    echo "</pre>";
+
+    ?>
+
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Results</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filter Results <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="showPassed()">Show Passed</a></li>
+              <li><a href="#" onclick="showFailed()">Show Failed</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" onclick="reset()">Reset</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input id = "search" type="text" class="form-control" placeholder="Search">
+            </div>
+          </form>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+
+    <?php
+
+    echo "<table class='table table-bordered'\n";
     passthru("cat results");
     echo ("\n</table>\n");
 
@@ -242,7 +294,7 @@ else {
    $logentry = $user.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
    if (!fwrite($handle,$logentry)){
        echo "could not write to log file<P>";
-   }   
+   }
    else {
        echo "<li>logged entry score = ".$perc."</li>";
    }
@@ -251,7 +303,7 @@ else {
        $logentry = $netid.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
        if (!fwrite($gradehandle,$logentry)){
 	      echo "could not write to gradelog file<P>";
-       }	  
+       }
        $netdir = $gradedir."/".$netid;
        if (!is_dir($netdir)){
            mkdir($netdir);
@@ -261,7 +313,7 @@ else {
        if (!is_dir($probdir)){
            mkdir($probdir);
 	   echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
-       }      
+       }
        echo "</ul>";
        #copy files
     }
@@ -287,13 +339,13 @@ if ($handle = opendir($tempdir)) {
            if ($sub == ".py" || $torm == "perc") {
                 $cpme = $tempdir."/".$torm;
 	        #echo "copying ".$cpme." to ".$probdir."<P>";
-                passthru("cp ".$cpme." ".$probdir); 
+                passthru("cp ".$cpme." ".$probdir);
                 #don't remove
            }
            else {
 	     if (!unlink($tempdir.'/'.$torm)) {
                echo "removal of $torm failed<P>";
-              }             
+              }
               else {
                 #echo "<P>removed ".$torm." ".$sub;
               }
@@ -308,7 +360,10 @@ if ($handle = opendir($tempdir)) {
 #else {
 #   echo "<P>all finished<P>";
 #}
-echo "</body></html>\n";
+
+# Link to frontend script
+echo "<script src = \"app.js\"></script>";
+echo "</div></body></html>\n";
 
 
 ?>
