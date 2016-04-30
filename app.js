@@ -28,3 +28,7 @@ function showFailed(){
 function reset(){
   $rows.show();
 }
+
+function collapse(){
+  $('#console').collapse('toggle');
+}

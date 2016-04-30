@@ -74,7 +74,12 @@ echo  "<span class=\"label label-default\">Problem: ". $problem. "</span>";
 echo  "<span class=\"label label-primary\">Language: " .$language. "</span>";
 echo  "<span class=\"label label-success\">Files: " .$filename. "</span></div>";
 
-echo "<hr><pre>";
+echo "<hr>";
+
+echo "<div class=\"list-group\">";
+echo "<button type=\"button\" class=\"list-group-item\" onclick=\"collapse()\">Toggle Console</button>";
+
+echo "<pre class=\"list-group-item collapse\" id = \"console\">";
 echo  "<br>Number of APT runs this session is: ".$runs."<P>";
 
 $user = "anonymous user";
@@ -211,7 +216,7 @@ if ($perc == "ok") {
     echo "<P>\n";
     echo "<b>Test Results Follow (scroll to see all)</b><p>";
 
-    echo "</pre>";
+    echo "</pre></div>";
 
     ?>
 

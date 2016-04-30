@@ -1,75 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
   <head>
     <title>APT: CompSci 101  Web Testing</title>
- 
-<style type="text/css">
+    <link rel="stylesheet" href="topstyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-body {
-  counter-reset: globalcounter;
-}
+    <style>
+      td > a{
+        margin-left: 8px;
+      }
 
-TABLE {
-   border: 1px solid black;
-   border-collapse: collapse;
-   counter-reset: aptcounter;
-   counter-increment: tablecounter;
-}
-TD{
-   border: 1px solid black;
-   padding: 3px;
-}
-TH{
-   border: 1px solid black;
-   padding: 5px;
-   background-color: #B0B0B0;
-}
-TD.probdesc{
-   border-top: 1px solid black;
-   border-bottom: 1px solid black;
-   background-color: #B0B0B0;
-}
-TD.probdesc:before{
-#  content: "(" counter(tablecounter) ") ";
-  background-color: #B0B0B0;
-}
+      body {
+        counter-reset: globalcounter;
+      }
 
-TD.submit{
-  border-top: 1px solid black;
-  background-color: #B0B0B0;
-}
+      TABLE {
+         /*border: 1px solid black;*/
+         border-collapse: collapse;
+         counter-reset: aptcounter;
+         counter-increment: tablecounter;
+      }
 
-TD.numbered {
-  border: 0px solid black;
-  background-color: #DCDCDC;
-}
+      TD.probdesc{
+         background-color: #bdc3c7;
+      }
 
-#TD.numbered:before{
-#  content: counter(globalcounter)" "counter(aptcounter)". ";
-#  counter-increment: aptcounter,globalcounter;
-#}
+      TD.numbered{
+        border-right: none !important;
+      }
 
-TD.hint {
-  border: 0px solid white;
-  background-color: #DCDCDC;
-}
+      TD.hint{
+        border-left: none !important;
+      }
 
-
-body {
-  background-color: #E8E8E8;
-}
-</style>
-
+    </style>
 
   </head>
 
   <body>
 
-    <h1>APT: CompSci 101, Spring 2016, APT </h1>
-<P>
-This is the testing page. Once your program works here, you need to run
-your APT on the submit page (back on the previous page).  
-</p>
+    <div class = "container">
+
+    <div class="center header">
+        <h1>APT: CompSci 101, Spring 2016, APT </h1>
+    </div>
+
+    <P>
+    This is the testing page. Once your program works here, you need to run
+    your APT on the submit page (back on the previous page).
+    </p>
 
 <?php
 
@@ -118,7 +97,7 @@ for($k=0; $k < count($lines); $k++){
 
        if (count($data) > 3) {
           $listing[$groupCount] .= '<td class="hint">'.$data[3]."<br><tr>";
-       } 
+       }
        else{
           $listing[$groupCount] .= '<td class="hint"> <br><tr>';
        }
@@ -133,13 +112,13 @@ for($k=0; $k < count($lines); $k++){
 }
 
 $chooseBoiler = 'Test file: <input type="file" name="upfile" size="80"><br>';
-$chooseBoiler .= '<center><input type="submit" value="test/run"></center></form>';
+$chooseBoiler .= '<center><input class = "btn" type="submit" value="test/run"></center></form>';
 
 for ($k=0; $k < $groupCount; $k++){
-   print '<table>';
-   print '<th width="250px"> Problem Set '.($groupCount-$k);  #list backwards
+   print '<table class = "table table-bordered">';
+   print '<th> Problem Set '.($groupCount-$k);  #list backwards
 #   print '<th width="250px"> Problem Set '.($k+1);   # list in order
-   print '<th width="450px"> Details';
+   print '<th> Details';
    print '<tr>';
    print $formHeader;
    print '<td colspan="2" class="probdesc">';
@@ -154,6 +133,8 @@ for ($k=0; $k < $groupCount; $k++){
 }
 
 ?>
+
+  </div>
 
   </body>
 </html>

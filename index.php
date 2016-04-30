@@ -15,17 +15,14 @@
       body{
         font-size: 16px;
       }
-      #index-header{
-        margin-bottom: 40px;
-      }
     </style>
   </head>
   <body>
 
 <div class="container">
 
-<div class="center">
-  <h1 id = "index-header">APTs</h1>
+<div class="center header">
+  <h1>APTs</h1>
 </div>
 
 <?php

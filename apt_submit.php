@@ -8,62 +8,38 @@
 <html>
   <head>
     <title>APT Grading CompSci 101</title>
- 
+    <link rel="stylesheet" href="topstyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 <style type="text/css">
+
+td > a{
+  margin-left: 8px;
+}
 
 body {
   counter-reset: globalcounter;
 }
 
 TABLE {
-   border: 1px solid black;
+   /*border: 1px solid black;*/
    border-collapse: collapse;
    counter-reset: aptcounter;
    counter-increment: tablecounter;
 }
-TD{
-   border: 1px solid black;
-   padding: 3px;
-}
-TH{
-   border: 1px solid black;
-   padding: 5px;
-   background-color: #B0B0B0;
-}
+
 TD.probdesc{
-   border-top: 1px solid black;
-   border-bottom: 1px solid black;
-   background-color: #B0B0B0;
-}
-TD.probdesc:before{
-#  content: "(" counter(tablecounter) ") ";
-  background-color: #B0B0B0;
+   background-color: #bdc3c7;
 }
 
-TD.submit{
-  border-top: 1px solid black;
-  background-color: #B0B0B0;
+TD.numbered{
+  border-right: none !important;
 }
 
-TD.numbered {
-  border: 0px solid black;
-  background-color: #DCDCDC;
+TD.hint{
+  border-left: none !important;
 }
 
-#TD.numbered:before{
-#  content: counter(globalcounter)" "counter(aptcounter)". ";
-#  counter-increment: aptcounter,globalcounter;
-#}
-
-TD.hint {
-  border: 0px solid white;
-  background-color: #DCDCDC;
-}
-
-
-body {
-  background-color: #E8E8E8;
-}
 </style>
 
 
@@ -71,7 +47,12 @@ body {
 
   <body>
 
-    <h1>APT Grading: CompSci 101, Spring 2016</h1>
+    <div class="container">
+
+      <div class="center header">
+        <h1>APT Grading: CompSci 101, Spring 2016</h1>
+      </div>
+
 <?php
     if ( isset($USER->displayname) ) {
         echo("<p>Hello ".$USER->displayname."</p>\n");
@@ -131,7 +112,7 @@ for($k=0; $k < count($lines); $k++){
 
        if (count($data) > 3) {
           $listing[$groupCount] .= '<td class="hint">'.$data[3]."<br><tr>";
-       } 
+       }
        else{
           $listing[$groupCount] .= '<td class="hint"> <br><tr>';
        }
@@ -146,13 +127,13 @@ for($k=0; $k < count($lines); $k++){
 }
 
 $chooseBoiler = 'Test file: <input type="file" name="upfile" size="80"><br>';
-$chooseBoiler .= '<center><input type="submit" value="test/run"></center></form>';
+$chooseBoiler .= '<center><input class = "btn" type="submit" value="test/run"></center></form>';
 
 for ($k=0; $k < $groupCount; $k++){
-   print '<table>';
-   print '<th width="250px"> Problem Set '.($groupCount-$k);  #list backwards
+   print '<table class = "table table-bordered">';
+   print '<th> Problem Set '.($groupCount-$k);  #list backwards
 #   print '<th width="250px"> Problem Set '.($k+1);   # list in order
-   print '<th width="450px"> Details';
+   print '<th> Details';
    print '<tr>';
    print $formHeader;
    print '<td colspan="2" class="probdesc">';
@@ -167,6 +148,8 @@ for ($k=0; $k < $groupCount; $k++){
 }
 
 ?>
+
+  </div> <!-- Container end -->
 
   </body>
 </html>
