@@ -1,5 +1,20 @@
-body {
-  padding: 20px;
+body{
+  /*font-size: 16px !important;*/
+}
+
+.nav .breadcrumb {
+    margin: 0 7px;
+}
+
+.breadcrumb{
+  background: transparent !important;
+}
+
+@media (min-width: 768px) {
+    .nav .breadcrumb {
+        float: left;
+        margin: 7px 10px;
+    }
 }
 
 .pass {

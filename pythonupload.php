@@ -30,6 +30,12 @@ $inputdir = "";
 $input_directory = $base.$inputdir;
 $meta_directory = $base."meta";
 
+// get whether we are testing or submitting
+$previous = 'Testing';
+if (isset($_SESSION['previous'])){
+  $previous = $_SESSION['previous'];
+}
+
 
 function get_tempdir_name(){
     $tempfile = tempnam('','');
@@ -60,15 +66,30 @@ echo "<html><head><title>APT: $problem</title>\n";
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 <?php
 echo  "</head>\n";
 echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
+
+// get correct link based on where you came from
+$prev_link = $previous == "Testing" ? "apt_test.php" : "apt_submit.php";
+$prev_link_title = $previous == "Testing" ? "Test Files" : "Submit Files";
+
+?>
+
+<nav class="navbar nav navbar-default navbar-static-top">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li><a href="index.php">Home</a></li>
+      <li> <?php echo "<a href = " . $prev_link . ">" . $prev_link_title . "</a>"; ?>
+      </li>
+      <li class="active"><?php echo $previous; ?></li>
+    </ol>
+  </div>
+</nav>
+
+<?php
+
 echo "<div class = 'container'>";
-$previous = 'Testing';
-if (isset($_SESSION['previous'])){
-  $previous = $_SESSION['previous'];
-}
 echo("<div class = \"center\"><h1>" .$previous." ".$problem."</h1>");
 ///echo  "<div class = \"center\"><h1>Submitting for Grading ".$problem."</h1>";
 if ( isset($USER->displayname) ) {
@@ -284,6 +305,10 @@ if ( isset($LAUNCH->result) ) {
     $retval = $LAUNCH->result->gradeSend($gradetosend);
     echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
 }
+
+// if ( $USER->instructor ) {
+//   echo "This is an instructor";
+// }
 
 if ($user != "anonymous user"){
    $netid = substr($user,0,strpos($user,"@"));

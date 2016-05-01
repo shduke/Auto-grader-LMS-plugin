@@ -48,6 +48,15 @@ TD.hint{
 
   <body>
 
+    <nav class="navbar nav navbar-default navbar-static-top">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="index.php">Home</a></li>
+          <li>Submit Files</li>
+        </ol>
+      </div>
+    </nav>
+
     <div class="container">
 
       <div class="center header">
