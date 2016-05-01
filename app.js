@@ -1,5 +1,7 @@
 $('.dropdown-toggle').dropdown();
 
+console.log(document.cookie);
+
 // http://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table
 var $rows = $('.table tr');
 $('#search').keyup(function() {
