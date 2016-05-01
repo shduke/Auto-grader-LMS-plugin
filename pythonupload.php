@@ -3,7 +3,6 @@
     use \Tsugi\Core\LTIX;
 
     $LAUNCH = LTIX::session_start();
-
 ob_start();
 $user="none";
 if (isset($_COOKIE['apt'])){
@@ -66,7 +65,8 @@ echo "<html><head><title>APT: $problem</title>\n";
 echo  "</head>\n";
 echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
 echo "<div class = 'container'>";
-echo  "<div class = \"center\"><h1>Submitting for Grading ".$problem."</h1>";
+echo("<div class = \"center\"><h1>" .$_SESSION['previous']. " for Grading ".$problem."</h1>");
+///echo  "<div class = \"center\"><h1>Submitting for Grading ".$problem."</h1>";
 if ( isset($USER->displayname) ) {
     echo("<p>Hello ".$USER->displayname."</p>\n");
 }

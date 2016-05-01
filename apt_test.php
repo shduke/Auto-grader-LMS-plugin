@@ -1,3 +1,11 @@
+<?php
+    require_once "config.php";
+    use \Tsugi\Core\LTIX;
+
+    $LAUNCH = LTIX::session_start();
+    $_SESSION['previous'] = 'Testing';
+?>
+
 <!DOCTYPE HTML>
 <html>
   <head>
