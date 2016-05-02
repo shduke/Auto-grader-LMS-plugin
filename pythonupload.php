@@ -6,20 +6,26 @@ use \Tsugi\Core\LTIX;
 // Launch a tsugi session
 $LAUNCH = LTIX::session_start();
 
+// Get info about problem
+$language = $_POST['language'];
+$problem  = $_POST['problem'];
+$course   = $_POST['course'];
+
 ob_start();
 $user="none";
 $runs = 0;
+$runs_cookie = $problem . '_runs';
 if (isset($_COOKIE['apt'])){
     $user=$_COOKIE['apt'];
-    $runs=$_COOKIE['aptaccess'];
+    $runs=$_COOKIE[$runs_cookie];
     $runs++;
-    setcookie('aptaccess',$runs);
+    setcookie($runs_cookie, $runs);
 }
 else {
     $runs = 1;
     $user="apt".rand();
     setcookie('apt', $user, time()+60*60*5);
-    setcookie('aptaccess', $runs, time()+60*60*5);
+    setcookie($runs_cookie, $runs, time()+60*60*5);
 }
 
 $p = $CFG->dbprefix;
@@ -63,9 +69,6 @@ $execname = "runpython";
 $tester = "Tester.py";
 
 ###$user =     $_POST['user'];
-$language = $_POST['language'];
-$problem  = $_POST['problem'];
-$course   = $_POST['course'];
 
 $filename = basename($_FILES['upfile']['name']);
 $ipaddress = $_SERVER['REMOTE_ADDR'];
@@ -120,7 +123,7 @@ echo "<div class=\"list-group\">";
 echo "<button type=\"button\" class=\"list-group-item\" onclick=\"collapse()\">Toggle Console</button>";
 
 echo "<pre class=\"list-group-item collapse\" id = \"console\">";
-echo  "<br>Number of APT runs this session is: ".$runs."<P>";
+echo  "<br>Number of " . $problem . " runs this session is: ".$runs."<P>";
 
 $user = "anonymous user";
 if ( isset($LAUNCH->user->email) ) {
@@ -314,15 +317,18 @@ if ($perc == "ok") {
 $netid = "";
 $probdir = "";
 
-if ( isset($LAUNCH->result) && !$USER->instructor) {
+if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
   // grade to pass to server/sakai
   $gradetosend = $perc+0.0;
+  // column entry in table
+  $grade_entry = $problem . "_grade";
+  $attept_entry = $problem . "_attempts";
 
   $PDOX->queryDie("INSERT INTO {$p}apt_grader
-      (display_name, link_id, user_id, run_count, top_grade)
+      (display_name, link_id, user_id, {$attept_entry}, {$grade_entry})
       VALUES ( :DNAME, :LI, :UI, :COUNT, :GRADE)
-      ON DUPLICATE KEY UPDATE display_name=:DNAME, run_count=:COUNT,
-      top_grade = CASE WHEN top_grade < :GRADE THEN :GRADE ELSE top_grade END
+      ON DUPLICATE KEY UPDATE display_name=:DNAME, {$attept_entry}=:COUNT,
+      {$grade_entry} = CASE WHEN {$grade_entry} < :GRADE THEN :GRADE ELSE {$grade_entry} END
       ",
       array(
           ':DNAME' => $displayname,

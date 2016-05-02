@@ -60,20 +60,30 @@
       echo $admin;
     ?>;
     var data = <?php echo json_encode($query); ?>;
-    console.log(data);
+    var problems = <?php echo json_encode($problems); ?>;
 
     // Parse the data into a format that C3 can read
-    function parseData(data){
+    function parseData(data, problems){
       var names = [];
-      var grades = [];
-      var attempts = [];
-      var efficiency = [];
+
+      var grades = {};
+      var attempts = {};
+      var efficiency = {};
+
+      for (var i = 0; i < problems.length; i++){
+        grades[problems[i]] = [];
+        attempts[problems[i]] = [];
+        efficiency[problems[i]] = [];
+      }
 
       for (var i = 0; i < data.length; i++){
         names.push(data[i].display_name);
-        grades.push(data[i].top_grade);
-        attempts.push(data[i].run_count);
-        efficiency.push(data[i].run_count / data[i].top_grade);
+        // efficiency.push(data[i].run_count / data[i].top_grade);
+        // populate grades
+        for (var j = 0; j < problems.length; j++){
+          grades[problems[j]].push(data[i][problems[j] + '_grade']);
+          attempts[problems[j]].push(data[i][problems[j] + '_attempts']);
+        }
       }
 
       return {
@@ -85,34 +95,26 @@
 
     }
 
-    var parsed_data = parseData(data);
+    var parsed_data = parseData(data, problems);
+    console.log(parsed_data);
     var ctx = document.getElementById("gradeChart").getContext("2d");
+
+    // create all datasets
+    datasets = [];
+    for (var i = 0; i < problems.length; i++){
+      datasets.push({
+        label: problems[i] + " Grade",
+        data: parsed_data.grades[problems[i]]
+      });
+      datasets.push({
+        label: problems[i] + " Attempts",
+        data: parsed_data.attempts[problems[i]]
+      })
+    }
 
     var chart_data = {
         labels: parsed_data.names,
-        datasets: [
-            {
-                label: "Grades",
-                backgroundColor: "rgba(255,99,132,0.4)",
-                borderColor: "rgba(255,99,132,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(255,99,132,0.8)",
-                hoverBorderColor: "rgba(255,99,132,1)",
-                data: parsed_data.grades,
-            },
-            {
-              label: "Attempts",
-              backgroundColor: "rgba(45,120,132,0.4)",
-              borderColor: "rgba(45,120,132,1)",
-              hoverBackgroundColor: "rgba(45,120,132,0.8)",
-              hoverBorderColor: "rgba(45,120,132,1)",
-              data: parsed_data.attempts
-            },
-            {
-              label: "Efficiency",
-              data: parsed_data.efficiency
-            }
-        ]
+        datasets: datasets
     };
 
     // Create the chart.js element
