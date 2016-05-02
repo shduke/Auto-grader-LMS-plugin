@@ -115,7 +115,25 @@
     var data = <?php echo json_encode($query); ?>;
     var problems = <?php echo json_encode($problems); ?>;
 
-    // Parse the data into a format that C3 can read
+    /** Generate a random rbba color **/
+    function color(){
+      var r = Math.floor((Math.random()*255).toString(10));
+      var g = Math.floor((Math.random()*255).toString(10));
+      var b = Math.floor((Math.random()*255).toString(10));
+      var base = 'rgba(' + r + ', ' + g + ', ' + b;
+      var light = base + ', 0.4)';
+      var full = base + ', 1.0)';
+      return {
+        backgroundColor: light,
+        borderColor: full,
+        pointHoverBackgroundColor: full,
+      }
+    }
+
+    /** Parse the data into a format that chart.js can read
+      * @param {object} The data parsed from the SQL table
+      * @param {array} The names of the problems to be graded
+    **/
     function parseData(data, problems){
       var names = [];
 
@@ -125,6 +143,16 @@
       var efficiency = {};
       var averages = {};
 
+      // helper function for averages
+      function avg(arr) {
+        var sum = 0;
+        for( var i = 0; i < arr.length; i++ ){
+            sum += parseFloat( arr[i], 10 );
+        }
+        return sum / arr.length;
+      }
+
+      // Intialization
       for (var i = 0; i < problems.length; i++){
         grades[problems[i]] = [];
         attempts[problems[i]] = [];
@@ -132,6 +160,7 @@
         averages[problems[i]] = [];
       }
 
+      // populated reformated data
       for (var i = 0; i < data.length; i++){
         names.push(data[i].display_name);
         // efficiency.push(data[i].run_count / data[i].top_grade);
@@ -140,15 +169,6 @@
           grades[problems[j]].push(data[i][problems[j] + '_grade']);
           attempts[problems[j]].push(data[i][problems[j] + '_attempts']);
         }
-      }
-
-      // helper function for averages
-      function avg(arr) {
-        var sum = 0;
-        for( var i = 0; i < arr.length; i++ ){
-            sum += parseFloat( arr[i], 10 );
-        }
-        return sum / arr.length;
       }
 
       // computing avgs
@@ -167,8 +187,8 @@
 
     }
 
+    // parse the data and get chart.js container
     var parsed_data = parseData(data, problems);
-    console.log(parsed_data);
     var ctx = document.getElementById("gradeChart").getContext("2d");
 
     // get grade averages
@@ -180,44 +200,43 @@
       attempts_array.push(parsed_data.averages[problems[i]].attempts);
     }
 
-    console.log(avg_array);
-    console.log(attempts_array);
-
-    // create all datasets
+    // create main datasets
     datasets = [];
     for (var i = 0; i < problems.length; i++){
-      datasets.push({
+      datasets.push($.extend({}, {
         label: problems[i] + " Grade",
         data: parsed_data.grades[problems[i]]
-      });
-      datasets.push({
+      }, color()));
+      datasets.push($.extend({}, {
         label: problems[i] + " Attempts",
         data: parsed_data.attempts[problems[i]]
-      })
+      }, color()))
     }
 
-    var chart_data = {
-        labels: parsed_data.names,
-        datasets: datasets
-    };
-
+    // Initialize the chart
     var myBarChart = new Chart(ctx, {
         type: 'bar',
-        data: chart_data
+        data: {
+            labels: parsed_data.names,
+            datasets: datasets
+        }
     });
 
-    // Create the chart.js element
+    /** Displays general data across users **/
     function showAll(){
       myBarChart.destroy();
       $('#gradeChart').show();
       $('.dump').hide();
       myBarChart = new Chart(ctx, {
           type: 'bar',
-          data: chart_data
+          data: {
+              labels: parsed_data.names,
+              datasets: datasets
+          }
       });
     }
 
-    // show averages
+    /** Displays averages across problems **/
     function showAverages(){
 
       //destroy old chart
@@ -229,20 +248,21 @@
         data: {
           labels: problems,
           datasets: [
-            {
+            $.extend({}, {
               label: 'Average grades',
               data: avg_array
-            },
-            {
+            }, color()),
+            $.extend({}, {
               label: 'Average attempts',
               data: attempts_array
-            }
+            }, color())
           ]
         }
       })
 
     }
 
+    /** Displays json dump of sql table **/
     function viewJSON(){
       // destroy the chart
       myBarChart.destroy();
