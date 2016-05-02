@@ -14,6 +14,8 @@
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="topstyle.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </head>
   <body>
 
@@ -41,15 +43,69 @@
       }
   ?>
 
-  <div class="container center">
-    <h1>Grades</h1>
+  <div class="container">
+    <div class="center">
+      <h1>Grades</h1>
+    </div>
+
+    <p>
+      Welcome to APT Analytics. Here you can visualize data on the student's APT performance.
+    </p>
+
+    <!-- Toolbar -->
+
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Results</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Datasets<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="showAverages()">Show Averages</a></li>
+              <li><a href="#" onclick="showAll()">Show All</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" onclick="viewJSON()">View Raw data</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- <ul class="nav navbar-nav navbar-right">
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <button class = "btn" type="button" name="button">Options</button>
+            </div>
+          </form>
+        </ul> -->
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+
 
     <div class="center">
       <canvas id="gradeChart" width="600" height="300"></canvas>
     </div>
+    <pre class = "dump" style = "display: none;">
+
+    </pre>
   </div>
 
   <script>
+
+    // dropdown
+    $('.dropdown-toggle').dropdown();
 
     // Inject sql query into javscript for processing
     var admin = <?php
@@ -89,7 +145,6 @@
       // helper function for averages
       function avg(arr) {
         var sum = 0;
-        console.log(arr);
         for( var i = 0; i < arr.length; i++ ){
             sum += parseFloat( arr[i], 10 );
         }
@@ -98,7 +153,7 @@
 
       // computing avgs
       for (var i = 0; i < problems.length; i++){
-        averages[problems[i]]['grades'] = avg(grades[problems[i]]);
+        averages[problems[i]]['grade'] = avg(grades[problems[i]]);
         averages[problems[i]]['attempts'] = avg(attempts[problems[i]]);
       }
 
@@ -115,6 +170,18 @@
     var parsed_data = parseData(data, problems);
     console.log(parsed_data);
     var ctx = document.getElementById("gradeChart").getContext("2d");
+
+    // get grade averages
+    var avg_array = [];
+    var attempts_array = [];
+    // iterate over each problem and retrieve average/attempts
+    for (var i = 0; i < problems.length; i++){
+      avg_array.push(parsed_data.averages[problems[i]].grade);
+      attempts_array.push(parsed_data.averages[problems[i]].attempts);
+    }
+
+    console.log(avg_array);
+    console.log(attempts_array);
 
     // create all datasets
     datasets = [];
@@ -134,31 +201,54 @@
         datasets: datasets
     };
 
-    // Create the chart.js element
     var myBarChart = new Chart(ctx, {
         type: 'bar',
         data: chart_data
     });
 
-    // Write out the data so you can figure out how to format it
-    // LIKE ON PAPER!
+    // Create the chart.js element
+    function showAll(){
+      myBarChart.destroy();
+      $('#gradeChart').show();
+      $('.dump').hide();
+      myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: chart_data
+      });
+    }
 
-    // var myBarChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //       labels: problems,
-    //       datasets: [
-    //         {
-    //           label: 'Average grades',
-    //           data: parsed_data.averages.grades
-    //         },
-    //         {
-    //           label: 'Average attempts',
-    //           data: parsed_data.averages.attempts
-    //         }
-    //       ]
-    //     }
-    // });
+    // show averages
+    function showAverages(){
+
+      //destroy old chart
+      myBarChart.destroy();
+      $('#gradeChart').show();
+      $('.dump').hide();
+      myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: problems,
+          datasets: [
+            {
+              label: 'Average grades',
+              data: avg_array
+            },
+            {
+              label: 'Average attempts',
+              data: attempts_array
+            }
+          ]
+        }
+      })
+
+    }
+
+    function viewJSON(){
+      // destroy the chart
+      myBarChart.destroy();
+      $('#gradeChart').hide();
+      $('.dump').show().text(JSON.stringify(data, null, 4));
+    }
 
   </script>
 
@@ -170,8 +260,3 @@
 
   </body>
 </html>
-
-<?php
-
-
-?>
