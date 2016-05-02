@@ -63,14 +63,17 @@
     function parseData(data, problems){
       var names = [];
 
+      // for each problem
       var grades = {};
       var attempts = {};
       var efficiency = {};
+      var averages = {};
 
       for (var i = 0; i < problems.length; i++){
         grades[problems[i]] = [];
         attempts[problems[i]] = [];
         efficiency[problems[i]] = [];
+        averages[problems[i]] = [];
       }
 
       for (var i = 0; i < data.length; i++){
@@ -83,11 +86,28 @@
         }
       }
 
+      // helper function for averages
+      function avg(arr) {
+        var sum = 0;
+        console.log(arr);
+        for( var i = 0; i < arr.length; i++ ){
+            sum += parseFloat( arr[i], 10 );
+        }
+        return sum / arr.length;
+      }
+
+      // computing avgs
+      for (var i = 0; i < problems.length; i++){
+        averages[problems[i]]['grades'] = avg(grades[problems[i]]);
+        averages[problems[i]]['attempts'] = avg(attempts[problems[i]]);
+      }
+
       return {
         'names': names,
         'grades': grades,
         'attempts': attempts,
-        'efficiency': efficiency
+        'efficiency': efficiency,
+        'averages': averages
       };
 
     }
@@ -119,6 +139,26 @@
         type: 'bar',
         data: chart_data
     });
+
+    // Write out the data so you can figure out how to format it
+    // LIKE ON PAPER!
+
+    // var myBarChart = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //       labels: problems,
+    //       datasets: [
+    //         {
+    //           label: 'Average grades',
+    //           data: parsed_data.averages.grades
+    //         },
+    //         {
+    //           label: 'Average attempts',
+    //           data: parsed_data.averages.attempts
+    //         }
+    //       ]
+    //     }
+    // });
 
   </script>
 

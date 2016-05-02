@@ -11,12 +11,11 @@ $DATABASE_UNINSTALL = array(
 $command = "create table {$CFG->dbprefix}apt_grader (
     display_name   varchar(64) NOT NULL,
     link_id        INTEGER NOT NULL,
-    user_id        INTEGER NOT NULL,
-    run_count      INTEGER NOT NULL,\n";
+    user_id        INTEGER NOT NULL,\n";
 
 // store # of attempts and top grade for each problem
 foreach ($problems as $problem){
-  $command .= "    " . $problem . "_grade INTEGER NOT NULL,\n";
+  $command .= "    " . $problem . "_grade FLOAT NOT NULL,\n";
   $command .= "    " . $problem . "_attempts INTEGER NOT NULL,\n";
 }
 
