@@ -17,7 +17,9 @@ $runs = 0;
 $runs_cookie = $problem . '_runs';
 if (isset($_COOKIE['apt'])){
     $user=$_COOKIE['apt'];
-    $runs=$_COOKIE[$runs_cookie];
+    if (isset($_COOKIE[$runs_cookie])){
+      $runs=$_COOKIE[$runs_cookie];
+    }
     $runs++;
     setcookie($runs_cookie, $runs);
 }

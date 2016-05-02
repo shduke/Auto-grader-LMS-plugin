@@ -40,7 +40,8 @@ class Tester(object):
                                 if a == None:
                                         break
                                 self.done = True
-                                self.doprint(printer,sprinter,_TRSTART+str(count)+_TDEND)
+                                # self.doprint(printer,sprinter,_TRSTART+str(count)+_TDEND)
+                                sprinter.write(_TRSTART+str(count)+_TDEND)
 
                                 self.resultReturned = False
                                 self.runtime = False
@@ -88,30 +89,30 @@ class Tester(object):
                                         else:
                                                 sprinter.write('<TD>strange error, contact professor:')
 
-                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' '); 
+                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' ');
 
                                         self.doprint(printer, sprinter, _TDEND)
 
                                 elif not p.ok():
-                                        printer.write(_TDFAIL+'</TR>\n')
-                                        sprinter.write(_TDFAIL+'<TD>expected<PRE> ')
+                                        # printer.write(_TDFAIL+'</TR>\n')
+                                        sprinter.write('<TD class="fail outcome">fail</TD>'+'<TD>expected<PRE> ')
                                         sprinter.write(str(expected))
                                         sprinter.write('</PRE>got<BR><PRE>')
                                         sprinter.write(str(self.result))
                                         sprinter.write('</PRE>: ')
 
-                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' '); 
+                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' ');
 
                                         sprinter.write(_TDEND+'\n')
                                 else:
                                         correctCount += 1
-                                        printer.write(_TDPASS+"\n")
-                                        sprinter.write('<TD class=pass>pass</TD><TD>')
+                                        # printer.write(_TDPASS+"\n")
+                                        sprinter.write('<TD class="pass outcome">pass</TD><TD>')
                                         sprinter.write('got<br><PRE> ')
                                         sprinter.write(str(self.result))
                                         sprinter.write('</PRE>: ')
 
-                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' '); 
+                                        sprinter.write(str(a)+' '); sprinter.write(str(b)+' '); sprinter.write(str(c)+' ');
 
                                         sprinter.write(_TDEND+'\n')
 

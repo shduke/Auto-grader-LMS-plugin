@@ -20,12 +20,9 @@
     <!-- Nabar -->
     <nav class="navbar nav navbar-default navbar-static-top">
       <div class="container">
-        <!-- <ol class="breadcrumb">
-         <li> <?php echo "<a href = " . $prev_link . "> <- Back</a>"; ?>
+        <ol class="breadcrumb">
+         <li><a href="index.php">Home</a></li>
         </ol>
-        <?php if ($USER->instructor){ ?>
-          <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link">Analytics</a></p>
-        <?php } ?> -->
       </div>
     </nav>
 
