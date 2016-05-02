@@ -47,14 +47,6 @@
   <div class="container center">
     <h1>Grades</h1>
 
-    <h3>Statistics</h3>
-
-    <?php
-      // compute statistics for grades
-      echo "Average grade: ";
-
-    ?>
-
     <div class="center">
       <canvas id="gradeChart" width="600" height="300"></canvas>
     </div>
@@ -74,15 +66,21 @@
     function parseData(data){
       var names = [];
       var grades = [];
+      var attempts = [];
+      var efficiency = [];
 
       for (var i = 0; i < data.length; i++){
         names.push(data[i].display_name);
         grades.push(data[i].top_grade);
+        attempts.push(data[i].run_count);
+        efficiency.push(data[i].run_count / data[i].top_grade);
       }
 
       return {
         'names': names,
-        'grades': grades
+        'grades': grades,
+        'attempts': attempts,
+        'efficiency': efficiency
       };
 
     }
@@ -95,12 +93,24 @@
         datasets: [
             {
                 label: "Grades",
-                backgroundColor: "rgba(255,99,132,0.2)",
+                backgroundColor: "rgba(255,99,132,0.4)",
                 borderColor: "rgba(255,99,132,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(255,99,132,0.4)",
+                hoverBackgroundColor: "rgba(255,99,132,0.8)",
                 hoverBorderColor: "rgba(255,99,132,1)",
                 data: parsed_data.grades,
+            },
+            {
+              label: "Attempts",
+              backgroundColor: "rgba(45,120,132,0.4)",
+              borderColor: "rgba(45,120,132,1)",
+              hoverBackgroundColor: "rgba(45,120,132,0.8)",
+              hoverBorderColor: "rgba(45,120,132,1)",
+              data: parsed_data.attempts
+            },
+            {
+              label: "Efficiency",
+              data: parsed_data.efficiency
             }
         ]
     };
