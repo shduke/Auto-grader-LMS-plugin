@@ -1,0 +1,58 @@
+.copyright {
+ font-style: italic;
+ font-size: small;
+}
+
+.container {
+    padding: 10px;
+    background-color: #f5f5f5;
+
+}
+
+.bordered {
+ border-top: thin solid;
+ padding-left: 5px;
+ padding-right: 5px;
+}
+
+.problem {
+  background-color: #f5f5f5;
+  padding-left: 10px;
+}
+
+.allclass {
+  float: right;
+  width: 60%;
+  background-color: #dcdcdc;
+  border: thin solid;
+  margin: 10px;
+}
+
+.allclass h3 {
+  background-color: #a9a9a9;
+  border: thin solid;
+}
+
+h3 {
+  background-color: #a9a9a9;
+  border: thin solid;
+  padding: 10px;
+}
+
+.example-odd{
+    background-color: #f5f5f5;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.example-even {
+    padding-left: 10px;
+    padding-bottom: 10px;
+    background-color: #dcdcdc;
+}
+
+.leftimage {
+  float: left;
+  padding: 10px;
+  margin: 10px;
+}

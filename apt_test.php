@@ -111,7 +111,7 @@ for($k=0; $k < count($lines); $k++){
        $button = '<input type="radio" name="problem" value="'.$data[0].'">';
 
        $listing[$groupCount].='<td class="numbered">'.$button.
-       '<a href="'.$apturl.$data[2]. '" target="_top">'.$data[1].'</em></A><br>';
+       '<a href="apt/'.strtolower($data[1]).'/'.strtolower($data[2]).'" target="_top">'.$data[1].'</em></A><br>';
 
 
 
