@@ -73,8 +73,9 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Datasets<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="showAverages()">Show Averages</a></li>
               <li><a href="#" onclick="showAll()">Show All</a></li>
+              <li><a href="#" onclick="showAverages()">Show Averages</a></li>
+              <li><a href="#" onclick="showPie()">Show Averages (Pie)</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" onclick="viewJSON()">View Raw data</a></li>
             </ul>
@@ -115,18 +116,49 @@
     var data = <?php echo json_encode($query); ?>;
     var problems = <?php echo json_encode($problems); ?>;
 
-    /** Generate a random rbba color **/
-    function color(){
+    /** Generate a random rgb color **/
+    function randColor(){
       var r = Math.floor((Math.random()*255).toString(10));
       var g = Math.floor((Math.random()*255).toString(10));
       var b = Math.floor((Math.random()*255).toString(10));
-      var base = 'rgba(' + r + ', ' + g + ', ' + b;
+      return {r: r, g: g, b: b};
+    }
+
+    /** Format color for bar chart options **/
+    function barColor(){
+      var color = randColor();
+      var base = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b;
       var light = base + ', 0.4)';
       var full = base + ', 1.0)';
       return {
         backgroundColor: light,
         borderColor: full,
         pointHoverBackgroundColor: full,
+      }
+    }
+
+    /**
+      * Format color for pie chart options
+      * @param {int} Length of data
+    **/
+    function pieColor(len){
+
+      bcolor = [];
+      hover_bcolor = [];
+
+      for (var i = 0; i < len; i++){
+        var color = randColor();
+        var base = 'rgba(' + color.r + ', ' + color.g + ', ' + color.b;
+        var light = base + ', 0.4)';
+        var full = base + ', 1.0)';
+
+        bcolor.push(light);
+        hover_bcolor.push(full);
+      }
+
+      return {
+        backgroundColor: bcolor,
+        hoverBackgroundColor: hover_bcolor
       }
     }
 
@@ -206,15 +238,15 @@
       datasets.push($.extend({}, {
         label: problems[i] + " Grade",
         data: parsed_data.grades[problems[i]]
-      }, color()));
+      }, barColor()));
       datasets.push($.extend({}, {
         label: problems[i] + " Attempts",
         data: parsed_data.attempts[problems[i]]
-      }, color()))
+      }, barColor()))
     }
 
     // Initialize the chart
-    var myBarChart = new Chart(ctx, {
+    var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: parsed_data.names,
@@ -224,10 +256,10 @@
 
     /** Displays general data across users **/
     function showAll(){
-      myBarChart.destroy();
+      myChart.destroy();
       $('#gradeChart').show();
       $('.dump').hide();
-      myBarChart = new Chart(ctx, {
+      myChart = new Chart(ctx, {
           type: 'bar',
           data: {
               labels: parsed_data.names,
@@ -240,10 +272,10 @@
     function showAverages(){
 
       //destroy old chart
-      myBarChart.destroy();
+      myChart.destroy();
       $('#gradeChart').show();
       $('.dump').hide();
-      myBarChart = new Chart(ctx, {
+      myChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: problems,
@@ -251,21 +283,43 @@
             $.extend({}, {
               label: 'Average grades',
               data: avg_array
-            }, color()),
+            }, barColor()),
             $.extend({}, {
               label: 'Average attempts',
               data: attempts_array
-            }, color())
+            }, barColor())
           ]
         }
       })
 
     }
 
+    function showPie(){
+      myChart.destroy();
+      $('#gradeChart').show();
+      $('.dump').hide();
+      myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: problems,
+          datasets: [
+            $.extend({}, {
+              label: 'Average grades',
+              data: avg_array
+            }, pieColor(problems.length)),
+            $.extend({}, {
+              label: 'Average attempts',
+              data: attempts_array
+            }, pieColor(problems.length))
+          ]
+        }
+      })
+    }
+
     /** Displays json dump of sql table **/
     function viewJSON(){
       // destroy the chart
-      myBarChart.destroy();
+      myChart.destroy();
       $('#gradeChart').hide();
       $('.dump').show().text(JSON.stringify(data, null, 4));
     }
