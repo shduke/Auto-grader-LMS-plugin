@@ -12,6 +12,12 @@ The folder comes with a `config.php` that assumes it this program is installed i
 
     if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
 
+Additionally, there is an array of problems:
+
+    $problems = array('bmi', 'grayscale');
+
+Modify this array to add more problems to the database.
+
 If you have the Tsugi management console running on the same server, you can make it so developer mode can test this application by updating the tool folder list:
 
     $CFG->tool_folders = array("admin", "samples", ... ,
