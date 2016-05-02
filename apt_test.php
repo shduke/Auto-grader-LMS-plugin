@@ -53,6 +53,9 @@
           <li><a href="index.php">Home</a></li>
           <li>Test Files</li>
         </ol>
+        <?php if ($USER->instructor){ ?>
+          <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link">Analytics</a></p>
+        <?php } ?>
       </div>
     </nav>
 

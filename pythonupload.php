@@ -1,10 +1,14 @@
 <?php
-    require_once "config.php";
-    use \Tsugi\Core\LTIX;
 
-    $LAUNCH = LTIX::session_start();
+require_once "config.php";
+use \Tsugi\Core\LTIX;
+
+// Launch a tsugi session
+$LAUNCH = LTIX::session_start();
+
 ob_start();
 $user="none";
+$runs = 0;
 if (isset($_COOKIE['apt'])){
     $user=$_COOKIE['apt'];
     $runs=$_COOKIE['aptaccess'];
@@ -17,6 +21,11 @@ else {
     setcookie('apt', $user, time()+60*60*5);
     setcookie('aptaccess', $runs, time()+60*60*5);
 }
+
+$p = $CFG->dbprefix;
+$displayname = !isset($USER->displayname) ? "anonymous" : $USER->displayname;
+
+
 $base = "./apt/";
 $scratch_directory = $base."incoming/";
 $gradedir = $base."gradesave";
@@ -35,7 +44,9 @@ $previous = 'Testing';
 if (isset($_SESSION['previous'])){
   $previous = $_SESSION['previous'];
 }
+$testing = $previous == 'Testing' ? True : False;
 
+#
 
 function get_tempdir_name(){
     $tempfile = tempnam('','');
@@ -72,6 +83,7 @@ echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
 
 // get correct link based on where you came from
 $prev_link = $previous == "Testing" ? "apt_test.php" : "apt_submit.php";
+$_SESSION['prev_link'] = $prev_link;
 $prev_link_title = $previous == "Testing" ? "Test Files" : "Submit Files";
 
 ?>
@@ -84,6 +96,9 @@ $prev_link_title = $previous == "Testing" ? "Test Files" : "Submit Files";
       </li>
       <li class="active"><?php echo $previous; ?></li>
     </ol>
+    <?php if ($USER->instructor){ ?>
+      <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link">Analytics</a></p>
+    <?php } ?>
   </div>
 </nav>
 
@@ -213,7 +228,6 @@ if ($result != "Yes"){
   echo "check with your professor<P>";
 }
 
-
 echo "<p>".$perc."</p>";
 if ($perc == "ok") {
   echo "<P>Compiling...<P>";
@@ -300,10 +314,30 @@ if ($perc == "ok") {
 $netid = "";
 $probdir = "";
 
-if ( isset($LAUNCH->result) ) {
-    $gradetosend = $perc+0.0;
+if ( isset($LAUNCH->result) && !$USER->instructor) {
+  // grade to pass to server/sakai
+  $gradetosend = $perc+0.0;
+
+  $PDOX->queryDie("INSERT INTO {$p}apt_grader
+      (display_name, link_id, user_id, run_count, top_grade)
+      VALUES ( :DNAME, :LI, :UI, :COUNT, :GRADE)
+      ON DUPLICATE KEY UPDATE display_name=:DNAME, run_count=:COUNT,
+      top_grade = CASE WHEN top_grade < :GRADE THEN :GRADE ELSE top_grade END
+      ",
+      array(
+          ':DNAME' => $displayname,
+          ':LI' => $LINK->id,
+          ':UI' => $USER->id,
+          ':COUNT' => $runs,
+          ':GRADE' => $gradetosend
+      )
+  );
+
+  if (!$testing){
     $retval = $LAUNCH->result->gradeSend($gradetosend);
     echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
+  }
+
 }
 
 // if ( $USER->instructor ) {
@@ -388,15 +422,9 @@ if ($handle = opendir($tempdir)) {
     }
 }
 
-#if (!rmdir($tempdir)) {
-#   echo "removing tempdir failed<P>";
-#}
-#else {
-#   echo "<P>all finished<P>";
-#}
-
 # Link to frontend script
 echo "<script src = \"app.js\"></script>";
+
 echo "</div></body></html>\n";
 
 
