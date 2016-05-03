@@ -1,14 +1,47 @@
+
+
 <html data-ember-extension="1"><head>
     <title>APT: BMI</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href="../apt.css" rel="stylesheet" type="text/css" media="screen, print">
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
   <style type="text/css"></style></head>
 
   <body>
-    <h1>APT: BMI</h1>
 
+<nav class="navbar nav navbar-default navbar-static-top">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li><a href="../../index.php">Home</a></li>
+    </ol>
+  </div>
+</nav>
 
-<div class="container">
-<div class="allclass">
+    <div class="center header">
+      <h1>APT: BMI</h1>
+  </div>
+<div class="container allclass">
+<div class="col-md-6">
+<h2>Problem Statement</h2>
+
+See <a href="http://en.wikipedia.org/wiki/Body_mass_index">Wikipedia</a>
+for information about <em>body mass index</em> or BMI and how to calculate
+it using the formula
+<pre>
+
+ BMI = 703.0695 * weight/(height<sup>2</sup>)
+
+</pre>
+<p>
+Write function <code>calculate</code> that returns the BMI of a person
+whose weight and height, in pounds and inches respectively, are
+parameters to the function <code>calculate</code>.
+
+</p><p>
+</p></div>
+<div class="allclass col-md-6" style="border: none; border-left: 1px solid">
 <h3>Specification</h3>
 <xmp>
   filename: BMI.py
@@ -24,74 +57,69 @@
       # you write code here
 </xmp>
 </div>
-<h2>Problem Statement</h2>
+</div>
+<div class="container set-padding" style="border:none">
+<div class="list-group-item set-padding" style="border:none" id="accordian" role="tablist" aria-multiselectable="true">
+<!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"> !-->
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <div class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Constraints
+        </a>
+      </div>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <ul>
+        <p></p><li> <code>weight</code> will be greater than zero
 
-See <a href="http://en.wikipedia.org/wiki/Body_mass_index">Wikipedia</a>
-for information about <em>body mass index</em> or BMI and how to calculate
-it using the formula
-<pre>
+        <p></p></li><li> <code>height</code> will be greater than zero
 
- BMI = 703.0695 * weight/(height<sup>2</sup>)
-
-
-</pre>
-<p>
-Write function <code>calculate</code> that returns the BMI of a person
-whose weight and height, in pounds and inches respectively, are
-parameters to the function <code>calculate</code>.
-
-</p><p>
-</p></div>
-<p>
-</p><h3>Constraints</h3>
-
-<ul>
-<p></p><li> <code>weight</code> will be greater than zero
-
-<p></p></li><li> <code>height</code> will be greater than zero
-
-</li></ul>
-
-
-<h3>Examples</h3>
-<ol>
-<li class="example-odd">
-<pre>weight = 200
+        </li></ul>
+      </div>
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <div class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          Examples
+        </a>
+      </div>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body" style="padding:0px">
+          <li class="list-group-item example-odd"><pre class="nopre">
+weight = 200
 height = 60
 
-returns 39.059
-</pre>
-
-<p>
-</p></li><li class="example-even">
-<pre>weight = 170
+returns 39.059</pre></li>
+          <li class="list-group-item example-even"><pre class="nopre">
+weight = 170
 height = 72
 
-returns 23.056
-</pre>
-<p>
-</p></li><li class="example-odd">
-<pre>weight = 53
+returns 23.056</pre></li>
+          <li class="list-group-item example-odd"><pre class="nopre">
+weight = 53
 height = 250
 
-returns 62.573
-
-</pre>
-<p>
-</p></li><li class="example-even">
-<pre>weight = 70
+returns 62.573</pre></li>
+          <li class="list-group-item example-even"><pre class="nopre">
+weight = 70
 height = 120
 
-returns 17.218
-</pre>
+returns 17.218</pre></li>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-
-</li></ol>
 <p>
 </p><div class="copyright">
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png"></a><br>This work
 is copyright © Owen Astrachan and
 is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0 Unported License</a>.
 </div>
-
 </body></html>

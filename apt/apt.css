@@ -1,13 +1,29 @@
+
+.nav .breadcrumb {
+    margin: 0 7px;
+}
+
+.breadcrumb{
+  background: transparent !important;
+}
+
+@media (min-width: 768px) {
+    .nav .breadcrumb {
+        float: left;
+        margin: 7px 10px;
+    }
+}
+
 .copyright {
  font-style: italic;
  font-size: small;
 }
 
-.container {
+/*.container {
     padding: 10px;
     background-color: #f5f5f5;
 
-}
+}*/
 
 .bordered {
  border-top: thin solid;
@@ -21,16 +37,16 @@
 }
 
 .allclass {
-  float: right;
-  width: 60%;
+  /*float: right;
+  width: 60%;*/
   background-color: #dcdcdc;
   border: thin solid;
-  margin: 10px;
+  padding: 0px;
 }
 
 .allclass h3 {
   background-color: #a9a9a9;
-  border: thin solid;
+  border: none;
 }
 
 h3 {
@@ -41,18 +57,40 @@ h3 {
 
 .example-odd{
     background-color: #f5f5f5;
-    padding-left: 10px;
-    padding-bottom: 10px;
+    text-align: left;
 }
 
 .example-even {
-    padding-left: 10px;
-    padding-bottom: 10px;
     background-color: #dcdcdc;
+    text-align: left;
 }
 
 .leftimage {
   float: left;
   padding: 10px;
   margin: 10px;
+}
+
+.center{
+  text-align: center;
+}
+
+.header{
+  margin-bottom: 40px;
+}
+
+.label{
+  margin: 5px;
+}
+
+.nopre{
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  margin-bottom: 0px;
+}
+
+.set-padding{
+  padding-left: 0px;
+  padding-right: 0px;
 }
