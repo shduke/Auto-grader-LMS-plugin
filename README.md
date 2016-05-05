@@ -1,14 +1,23 @@
 
 LTI-Enabled APT GRADER
 ======================
+**Zachary Marion and Sean Hudson** 
+*With help from Dr. Chuck*
 
+Description
+----------------------
+
+The LTI-Enabled APT Grader is an LTI compliant module based on a [Tsugi](http://csev.github.io/tsugi/) framework, which allows a LMS to easily incorporate the tool into its system. This tool grades APT submissions and immediately returns the grade result into the student's gradebook as well as provides aggregate graphical data for the instructor.
+
+Setup
+----------------------
 You need to download and install the [Tsugi Developer/Administrator Console](https://github.com/csev/tsugi) to be able to setup database tables, test your software, and configure your keys.
 
 Once that is installed, you can clone this repository:
 
     https://github.com/zacharyfmarion/apt_files
 
-The folder comes with a `config.php` that assumes it this program is installed in the same htdocs folder as the Tsugi Console.  This is a quick way to get this program up and running for testing. A key element of the configuration is to include this line as part of the configuration to indicate to Tsugi that we are using cookie-based sessions.
+The folder comes with a `config.php` that assumes that it is installed in the same htdocs folder as the Tsugi Console.  This is a quick way to get this program up and running for testing. A key element of the configuration is to include this line as part of the configuration to indicate to Tsugi that we are using cookie-based sessions.
 
     if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
 
@@ -122,7 +131,7 @@ Note that the `composer.lock` file and `vendor` folder are
 both in the `.gitignore` file and so they won't be checked into
 any repo.
 
-For advanced configuation, you need to retrieve a copy of
+For advanced configuration, you need to retrieve a copy of
 `config-dist.php` from the
 [Tsugi repository](https://github.com/csev/tsugi)
 or a copy of `config.php`
