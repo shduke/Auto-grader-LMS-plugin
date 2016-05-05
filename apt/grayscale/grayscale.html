@@ -1,14 +1,44 @@
+
+
 <html data-ember-extension="1"><head>
-    <title>APT: Grayscale</title>
+    <title>APT: BMI</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href="../apt.css" rel="stylesheet" type="text/css" media="screen, print">
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
   <style type="text/css"></style></head>
 
   <body>
-    <h1>APT: Grayscale</h1>
 
+<nav class="navbar nav navbar-default navbar-static-top">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li><a href="../../index.php">Home</a></li>
+      <li><a href="javascript:history.back()">Select File</a></li>
+      <li>Grayscale</a></li>
+    </ol>
+  </div>
+</nav>
 
-<div class="container">
-<div class="allclass">
+    <div class="center header">
+      <h1>APT: Grayscale</h1>
+  </div>
+<div class="container allclass">
+<div class="col-md-6">
+<h2>Problem Statement</h2>
+
+Converting color images into grayscale images is a common operation
+using image/photo software. There are several formula for doing such
+a conversion. For this problem you'll use a common <em>luminosity</em>
+based formula. Given integer Red/Green/Blue values, so-called (r,g,b)
+  values, return the grayscale value given by the formula:
+<pre>    0.21R + 0.71G + 0.07B
+</pre>
+Although there are other formulas, this one represents grayscale values
+well, where the returned values are between 0 and 255.
+</div>
+<div class="allclass col-md-6" style="border: none; border-left: 1px solid">
 <h3>Specification</h3>
 <xmp>
   filename: Grayscale.py
@@ -22,32 +52,39 @@
       # you write code here
 </xmp>
 </div>
-<h2>Problem Statement</h2>
-
-Converting color images into grayscale images is a common operation
-using image/photo software. There are several formula for doing such
-a conversion. For this problem you'll use a common <em>luminosity</em>
-based formula. Given integer Red/Green/Blue values, so-called (r,g,b)
-	values, return the grayscale value given by the formula:
-<pre>    0.21R + 0.71G + 0.07B
-</pre>
-Although there are other formulas, this one represents grayscale values
-well, where the returned values are between 0 and 255.
-
 </div>
-<p>
-</p><h3>Constraints</h3>
-
-<ul>
-<p></p><li><code>r</code>, <code>g</code>, and <code>b</code> will each be
-	  between 0 and 255 inclusive.
-</li></ul>
-
-
-<h3>Examples</h3>
-<ol>
-<li class="example-odd">
-<pre>r = 0
+<div class="container set-padding" style="border:none">
+<div class="list-group-item set-padding" style="border:none" id="accordian" role="tablist" aria-multiselectable="true">
+<!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"> !-->
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <div class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Constraints
+        </a>
+      </div>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <ul>
+        <p></p><li><code>r</code>, <code>g</code>, and <code>b</code> will each be
+    between 0 and 255 inclusive.
+        </li></ul>
+      </div>
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <div class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          Examples
+        </a>
+      </div>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body" style="padding:0px">
+          <li class="list-group-item example-odd"><pre class="nopre">
+r = 0
 g = 0
 b = 0
 
@@ -56,8 +93,9 @@ returns 0
 </pre>
 Black is black
 <p>
-</p></li><li class="example-even">
-<pre>r = 255
+</p></li>
+          <li class="list-group-item example-even"><pre class="nopre">
+r = 255
 g = 255
 b = 255
 
@@ -65,8 +103,9 @@ returns 252.45
 </pre>
 White is almost white?
 <p>
-</p></li><li class="example-odd">
-<pre>r = 0
+</p></li>
+          <li class="list-group-item example-odd"><pre class="nopre">
+r = 0
 g = 0
 b = 255
 
@@ -75,19 +114,26 @@ returns 17.85
 </pre>
 Blue, blue, my world is blue
 <p>
-</p></li><li class="example-even">
-<pre>r = 1
+</p></li>
+          <li class="list-group-item example-even"><pre class="nopre">
+r = 1
 g = 1
 b = 1
 
 returns 0.99
-</pre>
-</li></ol>
+</pre></li>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <p>
-</p><div class="copyright">
+</p>
+
+<div class="copyright">
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png"></a><br>This work
 is copyright © Owen Astrachan and
 is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0 Unported License</a>.
-</div>
-
+</div></div>
 </body></html>
