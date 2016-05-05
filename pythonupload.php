@@ -351,50 +351,50 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
 // if ( $USER->instructor ) {
 //   echo "This is an instructor";
 // }
+if (!$testing) {
+  if ($user != "anonymous user"){
+     $netid = substr($user,0,strpos($user,"@"));
+     echo "<p>Logging Results for ".$problem."</p>";
+     echo "<ul>";
+     echo "<li> netid is ".$netid."</li>";
+  }
+  if (!$gradehandle = fopen(__DIR__.'/'.$gradelog,'a')){
+      echo "could not open grade log file $gradelog<P>";
+  }
 
-if ($user != "anonymous user"){
-   $netid = substr($user,0,strpos($user,"@"));
-   echo "<p>Logging Results for ".$problem."</p>";
-   echo "<ul>";
-   echo "<li> netid is ".$netid."</li>";
+  if (!$handle = fopen(__DIR__.'/'.$log,'a')){
+      echo "could not open log file $log<P>";
+  }
+  else {
+     $tt = time();
+     $logentry = $user.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
+     if (!fwrite($handle,$logentry)){
+         echo "could not write to log file<P>";
+     }
+     else {
+         echo "<li>logged entry score = ".$perc."</li>";
+     }
+     if (strlen($netid) >= 1){
+         #echo "logging submission for ".$user."<P>";
+         $logentry = $netid.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
+         if (!fwrite($gradehandle,$logentry)){
+  	      echo "could not write to gradelog file<P>";
+         }
+         $netdir = $gradedir."/".$netid;
+         if (!is_dir($netdir)){
+             mkdir($netdir);
+  	   #echo "creating save directory for ".$netid."<P>";
+         }
+         $probdir = $netdir."/".$problem;
+         if (!is_dir($probdir)){
+             mkdir($probdir);
+  	   echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
+         }
+         echo "</ul>";
+         #copy files
+      }
+  }
 }
-if (!$gradehandle = fopen(__DIR__.'/'.$gradelog,'a')){
-    echo "could not open grade log file $gradelog<P>";
-}
-
-if (!$handle = fopen(__DIR__.'/'.$log,'a')){
-    echo "could not open log file $log<P>";
-}
-else {
-   $tt = time();
-   $logentry = $user.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
-   if (!fwrite($handle,$logentry)){
-       echo "could not write to log file<P>";
-   }
-   else {
-       echo "<li>logged entry score = ".$perc."</li>";
-   }
-   if (strlen($netid) >= 1){
-       #echo "logging submission for ".$user."<P>";
-       $logentry = $netid.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
-       if (!fwrite($gradehandle,$logentry)){
-	      echo "could not write to gradelog file<P>";
-       }
-       $netdir = $gradedir."/".$netid;
-       if (!is_dir($netdir)){
-           mkdir($netdir);
-	   #echo "creating save directory for ".$netid."<P>";
-       }
-       $probdir = $netdir."/".$problem;
-       if (!is_dir($probdir)){
-           mkdir($probdir);
-	   echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
-       }
-       echo "</ul>";
-       #copy files
-    }
-}
-
 #
 # This section removes files created and copied
 # for testing
