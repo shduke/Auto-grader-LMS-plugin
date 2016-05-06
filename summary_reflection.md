@@ -24,6 +24,8 @@ The first thing we did - as any self-respecting web developer would do - was [Bo
 
 Note that a navigation bar with breadcrumbs was added to make navigation between different pages easier. Additionally, the constraints and examples are now accordion panels, making it easy to hide pieces of information that you don't need to see. In general our goal with the UI overall was to declutter the experience while improving the usability and adding features.
 
+As a bonus adding bootstrap made the site responsive out of the box, so viewing it on mobile (although admittedly with limited functionality) is a much more enjoyable experience.
+
 ### The grading page
 
 Most of the time the student spends on the APT system is spend in the `pythonupload.php` file. This is the file that actually runs the grading script and outputs the results. This is also the file where the most changes were made. The main changes are outlined below:
@@ -85,6 +87,10 @@ $PDOX->queryDie("INSERT INTO {$p}apt_grader
 
 ### Limitations of LTI
 
-Rather alarmingly late in the process we realized a serious flaw in our initial approach to integrating LTI into the APT grader. The LTI system can only pass **one** grade back to the gradebook per session created. Essentially only 
+Rather alarmingly late in the process we realized a serious flaw in our initial approach to integrating LTI into the APT grader. The LTI system can only pass **one** grade back to the gradebook per session created. Essentially only one APT could be submitted per session (although any of them could be tested regardless). To handle this we essentially assume that students can open the tool for a specific problem through Sakai and test as much as they want, but can only submit to that APT in the session. We acknowledge that this is far from ideal and is currently a limitation of LTI.
 
-### Tradeoffs between current approach and Tsugi
+### What we accomplished / What could have gone better
+
+In all we believe we have significantly revamped the APT system by providing a more pleasing and functional interface for students to test their code. While sending one grade per session is not ideal, as a proof of concept it shows that LTI can be a powerful way of automating the grading of assignments, one that provides a way to easily extend the functionality of the LMS being used. While Sakai was the focus of our project as it is the LMS that Duke uses, this application should be fully compatible with just about any other LMS supporting LTI (Canvas, Blackboard, etc). This alone is a reason to consider integrating LTI in the future into more of Duke's external tools, especially as the spec continues to evolve and improve.
+
+In reflection, and as it goes with most projects, we would have benefitted from beginning actually coding earlier, rather than researching and attempting to learn PHP (of which only a minimal subset was needed). Addionally, we became quite intent on improving the UI of the APT grader, and only later realized the grading limitation (something that would have been helpful to know from day 1). Despite this, however, we believe the project went quite smoothly, and found the process to be enjoyable and informative. We look forward to seeing how Tsugi and LTI evolve as Learning Management Systems like Sakai continue to improve.

@@ -3,6 +3,9 @@
     use \Tsugi\Core\LTIX;
 
     $LAUNCH = LTIX::session_start();
+    // Get the problem that we can actually grade
+    $prob_to_sub = LTIX::customGet('apt');
+    // Set session to show that we came from testing
     $_SESSION['previous'] = 'Testing';
 ?>
 
@@ -58,6 +61,11 @@
         <?php } ?>
       </div>
     </nav>
+
+    <div class="problem center">
+      <button class = "simple-btn" onclick = "dismiss()">x</button>
+      <?php echo "Provisioned for: ".$prob_to_sub; ?>
+    </div>
 
     <div class = "container">
 
@@ -155,6 +163,8 @@ for ($k=0; $k < $groupCount; $k++){
 ?>
 
   </div>
+
+  <script src = "app.js"></script>
 
   </body>
 </html>

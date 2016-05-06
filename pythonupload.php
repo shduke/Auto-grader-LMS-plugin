@@ -2,6 +2,7 @@
 
 require_once "config.php";
 use \Tsugi\Core\LTIX;
+use Tsugi\Core\Context;
 
 // Launch a tsugi session
 $LAUNCH = LTIX::session_start();
@@ -15,10 +16,22 @@ $p = $CFG->dbprefix;
 // get source id
 // print_r(LTIX::sessionGet('sourcedid'));
 
+// Because of limitations of LTI, we can only submit
+// to one gradebook entry per session, which is configured
+// as a custom parameter passed through lti
+$prob_to_sub = LTIX::customGet('apt');
+
 ob_start();
 $user="none";
 $runs = 0;
 $runs_cookie = $problem . '_runs';
+
+// Handle cookies...the $runs_cookie corresponds to how
+// many times a certain problem has been run...to make this
+// information persistent accross sessions we query the database
+// at each session start
+
+//TODO: Completely remove coookies from this
 
 if (isset($_COOKIE[$runs_cookie])){
   $runs=$_COOKIE[$runs_cookie];
@@ -84,14 +97,13 @@ $ipaddress = $_SERVER['REMOTE_ADDR'];
 
 echo "<html><head><title>APT: $problem</title>\n";
 ?>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="topstyle.css">
-<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="topstyle.css">
+  <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body bgcolor="#ffffff" text="#000000">
 <?php
-echo  "</head>\n";
-echo  "<body bgcolor=\"#ffffff\" text=\"#000000\">\n";
 
 // get correct link based on where you came from
 $prev_link = $previous == "Testing" ? "apt_test.php" : "apt_submit.php";
@@ -122,15 +134,24 @@ echo("<div class = \"center\"><h1>" .$previous." ".$problem."</h1>");
 if ( isset($USER->displayname) ) {
     echo("<p>Hello ".$USER->displayname."</p>\n");
 }
+
+// Labels that appear below the title informing the user
+// of the problem they are currently on
+
 echo  "<span class=\"label label-default\">Problem: ". $problem. "</span>";
 echo  "<span class=\"label label-primary\">Language: " .$language. "</span>";
 echo  "<span class=\"label label-success\">Files: " .$filename. "</span></div>";
 
 echo "<hr>";
 
-# Toggle console
+// Toggle console (inside a panel)
 
 ?>
+
+<div class="problem center">
+  <button class = "simple-btn" onclick = "dismiss()">x</button>
+  <?php echo "Provisioned for: ".$prob_to_sub; ?>
+</div>
 
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="headingTwo">
@@ -144,6 +165,9 @@ echo "<hr>";
     <div class="panel-body" style="padding:0px; font-family:Menlo; padding: 15px;">
 
 <?php
+
+// What follows is the logging code in which the problem
+// is actually tested. This has been largely unchanged
 
 echo  "<br>Number of " . $problem . " runs this session is: ".$runs."<P>";
 
@@ -282,6 +306,9 @@ if ($perc == "ok") {
 
     echo "</div></div></div>";
 
+    // Below is the navigation bar for filtering the results
+    // of the above test.
+
     ?>
 
     <nav class="navbar navbar-default">
@@ -346,6 +373,9 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
   $grade_entry = $problem . "_grade";
   $attept_entry = $problem . "_attempts";
 
+  // Insert / update the database with the new information
+  // (new number of attempts + grade if higher than previous)
+
   $PDOX->queryDie("INSERT INTO {$p}apt_grader
       (display_name, link_id, user_id, {$attept_entry}, {$grade_entry})
       VALUES ( :DNAME, :LI, :UI, :COUNT, :GRADE)
@@ -361,12 +391,16 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
       )
   );
 
-  if (!$testing){
+  // If we are not testing (came here from submit) and also this
+  // is the problem that you are submitting, the grade is sent
+  // back to the LMS gradebook
+  if (!$testing && $problem == $prob_to_sub){
     $retval = $LAUNCH->result->gradeSend($gradetosend);
     $msg = 'Grade '.$gradetosend.' sent to '.$sourcedid.' by '.$USER->id;
-    echo $msg;
-
-    echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
+    if ($debug){
+      echo $msg;
+      echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
+    }
   }
 
 }
@@ -377,9 +411,11 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
 if (!$testing) {
   if ($user != "anonymous user"){
      $netid = substr($user,0,strpos($user,"@"));
-     echo "<p>Logging Results for ".$problem."</p>";
-     echo "<ul>";
-     echo "<li> netid is ".$netid."</li>";
+     if ($debug){
+       echo "<p>Logging Results for ".$problem."</p>";
+       echo "<ul>";
+       echo "<li> netid is ".$netid."</li>";
+     }
   }
   if (!$gradehandle = fopen(__DIR__.'/'.$gradelog,'a')){
       echo "could not open grade log file $gradelog<P>";
@@ -411,7 +447,7 @@ if (!$testing) {
          $probdir = $netdir."/".$problem;
          if (!is_dir($probdir)){
              mkdir($probdir);
-  	   echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
+  	         echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
          }
          echo "</ul>";
          #copy files

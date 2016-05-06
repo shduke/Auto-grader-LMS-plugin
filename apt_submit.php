@@ -3,6 +3,9 @@
     use \Tsugi\Core\LTIX;
 
     $LAUNCH = LTIX::session_start();
+    // Get the problem that we can actually grade
+    $prob_to_sub = LTIX::customGet('apt');
+    // Set session to show that we came from submit
     $_SESSION['previous'] = 'Submitting for Grading';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -59,6 +62,11 @@ TD.hint{
         <?php } ?>
       </div>
     </nav>
+
+    <div class="problem center">
+      <button class = "simple-btn" onclick = "dismiss()">x</button>
+      <?php echo "Provisioned for: ".$prob_to_sub; ?>
+    </div>
 
     <div class="container">
 
@@ -163,6 +171,8 @@ for ($k=0; $k < $groupCount; $k++){
 ?>
 
   </div> <!-- Container end -->
+
+  <script src = "app.js"></script>
 
   </body>
 </html>

@@ -29,6 +29,6 @@ function reset(){
   $rows.show();
 }
 
-function collapse(){
-  $('#console').collapse('toggle');
+function dismiss(){
+  document.querySelectorAll('.simple-btn')[0].parentElement.style.display = 'none';
 }

@@ -3,6 +3,8 @@
     use \Tsugi\Core\LTIX;
 
     $LAUNCH = LTIX::session_start();
+    // Get the problem that we can actually grade
+    $prob_to_sub = LTIX::customGet('apt');
 
    $title = "APTs";
 ?>
@@ -24,6 +26,10 @@
       <?php } ?>
     </div>
   </nav>
+  <div class="problem center">
+    <button class = "simple-btn" onclick = "dismiss()">x</button>
+    <?php echo "Provisioned for: ".$prob_to_sub; ?>
+  </div>
 
   <div class="container">
 
@@ -85,6 +91,8 @@
   If you do extra APTs, they still have to be turned in on the due date.
 
   </div> <!-- Container end -->
+
+  <script src = "app.js"></script>
 
   </body>
 </head>

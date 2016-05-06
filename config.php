@@ -17,8 +17,11 @@ if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
 require_once dirname(__DIR__)."/tsugi/config.php";
 
 // Set all of the problems that you being used
-
 $problems = array('bmi', 'grayscale');
+
+// Debug variable...turn off for production
+$debug = true;
+
 
 // It is possible to set this up when it is not running on the same
 // server as the Tsugi management console.   In that case, take the
