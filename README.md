@@ -40,11 +40,15 @@ $CFG->tool_folders = array("admin", "samples", ... ,
     "exercises", "../apt_files");
 ```
 
-With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience (the file is called `tsugi_config.php`).
+With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience (the file is called `tsugi_config.php`). For use in production I would change the client and secret to something a bit more secure (changing the accompanying cliend and secret in the LMS link), and also turn developer mode off:
+
+```php
+$CFG->DEVELOPER = false;
+```
 
 If for production purposes and you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
 
-If you are adding a new APT problem to the server, you are going to need to edit the Tester.py file to get the filter funcionality and not see the green rows before seeing the actual data results. 
+Additionally, If you are adding a new APT problem to the server, you are going to need to edit the Tester.py file to get the filter funcionality and not see the green rows before seeing the actual data results. 
 
 Modify the following lines in the file:
 
