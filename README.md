@@ -1,7 +1,7 @@
 
 LTI-Enabled APT GRADER
 ======================
-**Zachary Marion and Sean Hudson** 
+**Zachary Marion and Sean Hudson**
 *with help from Dr. Chuck*
 
 Link to our [project reflection](/project_reflection/summary_reflection.md)
@@ -48,7 +48,7 @@ $CFG->DEVELOPER = false;
 
 If for production purposes and you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
 
-Additionally, If you are adding a new APT problem to the server, you are going to need to edit the Tester.py file to get the filter funcionality and not see the green rows before seeing the actual data results. 
+Additionally, If you are adding a new APT problem to the server, you are going to need to edit the Tester.py file to get the filter funcionality and not see the green rows before seeing the actual data results.
 
 Modify the following lines in the file:
 
@@ -73,6 +73,11 @@ else:
     sprinter.write('<TD class="pass outcome">pass</TD><TD>')
     sprinter.write('got<br><PRE> ')
 ```
+
+Setting up on Sakai (11)
+------------------------
+
+Once you have a Sakai course set up, go to "Site Info" -> "External Tools" and "Install LTI 1.1 Tool". Fill in all the relevant fields, checking "Send User Names to External Tool", "Send Email Addresses to External Tool" and "Allow External Tool to return grades". Hit save and the tool should appear in the sidebar. To get the grading to work, click "Edit" and under "Routing Grades to the Gradebook" select the gradebook item you want the grade to be sent back to. Currently all the grader supports is sending an average of all the APT's submitted, although this may change in the future.
 
 How Tsugi Uses Session
 ----------------------
