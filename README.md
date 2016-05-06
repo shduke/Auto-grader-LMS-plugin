@@ -21,18 +21,24 @@ Once that is installed, you can clone this repository:
 
 The folder comes with a `config.php` that assumes that it is installed in the same htdocs folder as the Tsugi Console.  This is a quick way to get this program up and running for testing. A key element of the configuration is to include this line as part of the configuration to indicate to Tsugi that we are using cookie-based sessions.
 
-    if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
+```php
+if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
+```
 
 Additionally, there is an array of problems:
 
-    $problems = array();
+```php
+$problems = array();
+```
 
 This is generated from `apt.txt`, so if you add more problems to this file (and upgrade the database tables via the Admin console in the Tsugi Dev console) the problems should now be saved to the database.
 
 If you have the Tsugi management console running on the same server, you can make it so developer mode can test this application by updating the tool folder list:
 
-    $CFG->tool_folders = array("admin", "samples", ... ,
-        "exercises", "../apt_files");
+```php
+$CFG->tool_folders = array("admin", "samples", ... ,
+    "exercises", "../apt_files");
+```
 
 With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience (the file is called `tsugi_config.php`).
 
