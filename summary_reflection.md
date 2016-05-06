@@ -52,6 +52,39 @@ The final version is shown below (not a few other tweaks like having the problem
 
 While neither of us had really worked with SQL before, we wanted to perform some kind of analytics on the APT data - although the idea was a bit vague at the beginning. Originally we had wanted to store data on each individual case (for example seeing which case was missed the most), but this turned out to be prohibitively time consuming, and so we decided to focus on two metrics - grades received and number of attempts. The number of attempts data was thought to be useful as a greater number of average trials for a particular problem would show not just how the students did on it, but also how long it took them. Given these two measures, a table was created in Tsugi using a `database.php` file (which Tsugi automatically knows to read). This file essentially creates the table, where each row is an LTI user (none of this is used without LTI) and there is a column for the number of trials and highest grade for each of the students.
 
-The analytics page itself is only available if the LTI user logged in is an administrator - something Tsugi keeps track of for you.
+The analytics page itself is only available if the LTI user logged in is an administrator - something Tsugi keeps track of for you. On this page we display all the data we have on all the users currently enrolled in the course as the default view. From a dropdown you can also select to just view that averages for each of the problems, or a nested pie chart that allows you to compare the average grade vs. the average attempts. This could be a more helpful measure or problem difficulty than just the average grade, as there is no limit on the amount of times a student can test their code. Lastly viewing the raw json data used to generate the graphs (made using [Chart.js](http://www.chartjs.org/) in javascript) is also an option, in case more complex data analysis is required.
+
+Opening the analytics page:
+
+![](http://g.recordit.co/dTPuvW7O0v.gif)
+
+It is important to note that all of this was made possible through Tsugi - Tsugi is was handles the incoming LTI post information and creates a session with the user data. From here, using a Tsugi function in the PDOX helper class, we can call the necessary SQL to update the tables:
+
+```php
+// grade to pass to server/sakai
+$gradetosend = $perc+0.0;
+// column entry in table
+$grade_entry = $problem . "_grade";
+$attept_entry = $problem . "_attempts";
+
+$PDOX->queryDie("INSERT INTO {$p}apt_grader
+    (display_name, link_id, user_id, {$attept_entry}, {$grade_entry})
+    VALUES ( :DNAME, :LI, :UI, :COUNT, :GRADE)
+    ON DUPLICATE KEY UPDATE display_name=:DNAME, {$attept_entry}=:COUNT,
+    {$grade_entry} = CASE WHEN {$grade_entry} < :GRADE THEN :GRADE ELSE {$grade_entry} END
+    ",
+    array(
+        ':DNAME' => $displayname,
+        ':LI' => $LINK->id,
+        ':UI' => $USER->id,
+        ':COUNT' => $runs,
+        ':GRADE' => $gradetosend
+    )
+);
+```
+
+### Limitations of LTI
+
+Rather alarmingly late in the process we realized a serious flaw in our initial approach to integrating LTI into the APT grader. The LTI system can only pass **one** grade back to the gradebook per session created. Essentially only 
 
 ### Tradeoffs between current approach and Tsugi
