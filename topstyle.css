@@ -37,6 +37,11 @@ body{
   margin-bottom: 40px;
 }
 
+pre#console{
+  margin: 0 !important;
+  border-radius: inherit !important;
+}
+
 pre{
   background-color: #f5f5f5 !important;
 }

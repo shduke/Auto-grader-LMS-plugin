@@ -1,9 +1,13 @@
 <?php
   // Tsugi setup
   require_once "config.php";
+  use \Tsugi\Grades\GradeUtil;
   use \Tsugi\Core\LTIX;
 
   $LAUNCH = LTIX::session_start();
+
+  // $grades = GradeUtil::gradeLoadAll();
+  // echo GradeUtil::gradeShowAll($grades);
 
 ?>
 <html>

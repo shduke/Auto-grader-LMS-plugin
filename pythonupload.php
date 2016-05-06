@@ -78,8 +78,8 @@ $ipaddress = $_SERVER['REMOTE_ADDR'];
 echo "<html><head><title>APT: $problem</title>\n";
 ?>
 
-<link rel="stylesheet" type="text/css" href="topstyle.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="topstyle.css">
 <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <?php
@@ -121,10 +121,23 @@ echo  "<span class=\"label label-success\">Files: " .$filename. "</span></div>";
 
 echo "<hr>";
 
-echo "<div class=\"list-group\">";
-echo "<button type=\"button\" class=\"list-group-item\" onclick=\"collapse()\">Toggle Console</button>";
+# Toggle console
 
-echo "<pre class=\"list-group-item collapse\" id = \"console\">";
+?>
+
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingTwo">
+    <div class="panel-title">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        Toggle Console
+      </a>
+    </div>
+  </div>
+  <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+    <div class="panel-body" style="padding:0px; font-family:Menlo; padding: 15px;">
+
+<?php
+
 echo  "<br>Number of " . $problem . " runs this session is: ".$runs."<P>";
 
 $user = "anonymous user";
@@ -260,7 +273,7 @@ if ($perc == "ok") {
     echo "<P>\n";
     echo "<b>Test Results Follow (scroll to see all)</b><p>";
 
-    echo "</pre></div>";
+    echo "</div></div></div>";
 
     ?>
 
