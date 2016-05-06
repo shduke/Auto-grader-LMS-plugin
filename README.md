@@ -25,16 +25,16 @@ The folder comes with a `config.php` that assumes that it is installed in the sa
 
 Additionally, there is an array of problems:
 
-    $problems = array('bmi', 'grayscale');
+    $problems = array();
 
-Modify this array to add more problems to the database.
+This is generated from `apt.txt`, so if you add more problems to this file (and upgrade the database tables via the Admin console in the Tsugi Dev console) the problems should now be saved to the database.
 
 If you have the Tsugi management console running on the same server, you can make it so developer mode can test this application by updating the tool folder list:
 
     $CFG->tool_folders = array("admin", "samples", ... ,
         "exercises", "../apt_files");
 
-With that the tool will be easily testable from the Tsugi management console.
+With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience.
 
 If for production purposes and you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
 
