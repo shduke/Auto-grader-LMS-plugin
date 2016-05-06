@@ -34,7 +34,7 @@ If you have the Tsugi management console running on the same server, you can mak
     $CFG->tool_folders = array("admin", "samples", ... ,
         "exercises", "../apt_files");
 
-With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience.
+With that the tool will be easily testable from the Tsugi management console (although this is certainly not necessary). As mentioned above, you need to have set up Tsugi as per the instructions on their repo...a sample config.php file for the tsugi console is provided for convenience (the file is called `tsugi_config.php`).
 
 If for production purposes and you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
 
