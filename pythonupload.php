@@ -116,8 +116,9 @@ $prev_link_title = $previous == "Testing" ? "Test Files" : "Submit Files";
       </li>
       <li class="active"><?php echo $previous; ?></li>
     </ol>
+    <p class="navbar-text navbar-right"><a href="gradebook.php" class="navbar-link">Gradebook</a></p>
     <?php if ($USER->instructor){ ?>
-      <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link">Analytics</a></p>
+      <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link analytics">Analytics</a> | </p>
     <?php } ?>
   </div>
 </nav>

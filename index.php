@@ -3,10 +3,7 @@
     use \Tsugi\Core\LTIX;
 
     $LAUNCH = LTIX::session_start();
-    // Get the problem that we can actually grade
-    $prob_to_sub = LTIX::customGet('apt');
-
-   $title = "APTs";
+    $title = "APTs";
 ?>
 
 <html>

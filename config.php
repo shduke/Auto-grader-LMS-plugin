@@ -17,7 +17,21 @@ if ( !defined('COOKIE_SESSION') ) define('COOKIE_SESSION', true);
 require_once dirname(__DIR__)."/tsugi/config.php";
 
 // Set all of the problems that you being used
-$problems = array('bmi', 'grayscale');
+$problems = array();
+
+$name= "apt.txt";
+$all = file_get_contents($name);
+$lines = explode("\n",$all);
+for($k=0; $k < count($lines); $k++){
+  $temp = $lines[$k];
+  if (substr($temp,0,1) != "#") {
+    $data = explode(":", $temp);
+    if (count($data) >= 3){
+      array_push($problems, $data[0]);
+    }
+  }
+}
+
 
 // Debug variable...turn off for production
 $debug = false;
