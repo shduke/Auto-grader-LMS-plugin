@@ -2,7 +2,7 @@
 LTI-Enabled APT GRADER
 ======================
 **Zachary Marion and Sean Hudson** 
-*ith help from Dr. Chuck*
+*with help from Dr. Chuck*
 
 Link to our [project reflection](/project_reflection/summary_reflection.md)
 
