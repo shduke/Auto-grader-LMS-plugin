@@ -2,6 +2,8 @@
 
 _Zachary Marion, Sean Hudson_
 
+Link to our [presentation](https://docs.google.com/presentation/d/1W-0KVS2EvGjj2fYEPM-U3YFu9IiKAciqSb5T97SQ4tk/edit?usp=sharing)
+
 ### Initial Attempts
 
 Our initial attempts to build a Tsugi module were fraught with gaps in knowledge of both PHP and the framework itself. An early version of the autograder (which was almost entirely dismantled) parsed HTML inputted as text, found where the grade was in the text using regular expressions, and sent the grade to the Sakai gradebook over LTI. This last concept requires a bit more explanation, which will be discussed later on.
