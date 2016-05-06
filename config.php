@@ -20,7 +20,7 @@ require_once dirname(__DIR__)."/tsugi/config.php";
 $problems = array('bmi', 'grayscale');
 
 // Debug variable...turn off for production
-$debug = true;
+$debug = false;
 
 
 // It is possible to set this up when it is not running on the same

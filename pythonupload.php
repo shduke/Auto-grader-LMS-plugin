@@ -13,14 +13,6 @@ $problem  = $_POST['problem'];
 $course   = $_POST['course'];
 $p = $CFG->dbprefix;
 
-// get source id
-// print_r(LTIX::sessionGet('sourcedid'));
-
-// Because of limitations of LTI, we can only submit
-// to one gradebook entry per session, which is configured
-// as a custom parameter passed through lti
-$prob_to_sub = LTIX::customGet('apt');
-
 ob_start();
 $user="none";
 $runs = 0;
@@ -35,7 +27,11 @@ $runs_cookie = $problem . '_runs';
 
 if (isset($_COOKIE[$runs_cookie])){
   $runs=$_COOKIE[$runs_cookie];
-  $user=$_COOKIE[$problem];
+  if (isset($_COOKIE[$problem])){
+    $user=$_COOKIE[$problem];
+  }else{
+    $user = "anonymous";
+  }
   $runs++;
   setcookie($runs_cookie, $runs);
 }
@@ -147,11 +143,6 @@ echo "<hr>";
 // Toggle console (inside a panel)
 
 ?>
-
-<div class="problem center">
-  <button class = "simple-btn" onclick = "dismiss()">x</button>
-  <?php echo "Provisioned for: ".$prob_to_sub; ?>
-</div>
 
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="headingTwo">
@@ -366,20 +357,20 @@ if ($perc == "ok") {
 $netid = "";
 $probdir = "";
 
-if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
+if ( isset($LAUNCH->result) && !$USER->instructor) {
   // grade to pass to server/sakai
   $gradetosend = $perc+0.0;
   // column entry in table
   $grade_entry = $problem . "_grade";
-  $attept_entry = $problem . "_attempts";
+  $attempt_entry = $problem . "_attempts";
 
   // Insert / update the database with the new information
   // (new number of attempts + grade if higher than previous)
 
   $PDOX->queryDie("INSERT INTO {$p}apt_grader
-      (display_name, link_id, user_id, {$attept_entry}, {$grade_entry})
+      (display_name, link_id, user_id, {$attempt_entry}, {$grade_entry})
       VALUES ( :DNAME, :LI, :UI, :COUNT, :GRADE)
-      ON DUPLICATE KEY UPDATE display_name=:DNAME, {$attept_entry}=:COUNT,
+      ON DUPLICATE KEY UPDATE display_name=:DNAME, {$attempt_entry}=:COUNT,
       {$grade_entry} = CASE WHEN {$grade_entry} < :GRADE THEN :GRADE ELSE {$grade_entry} END
       ",
       array(
@@ -394,9 +385,24 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
   // If we are not testing (came here from submit) and also this
   // is the problem that you are submitting, the grade is sent
   // back to the LMS gradebook
-  if (!$testing && $problem == $prob_to_sub){
-    $retval = $LAUNCH->result->gradeSend($gradetosend);
-    $msg = 'Grade '.$gradetosend.' sent to '.$sourcedid.' by '.$USER->id;
+  if (!$testing){
+
+    # dynamically generating query fields
+    $grade_cols = array();
+    foreach ($problems as $problem){
+      array_push($grade_cols, $problem . "_grade");
+    }
+    $str_query = implode('+', $grade_cols);
+    $str_query = '(' . $str_query . ')';
+    $str_query .= "/".count($problems);
+
+    // get average of all grades
+    $avg = $PDOX->rowDie("SELECT {$str_query} from {$p}apt_grader
+      WHERE user_id = :UID", array(':UID' => $USER->id));
+
+    // Send average grade back over LTI
+    $retval = $LAUNCH->result->gradeSend($avg[$str_query]);
+    $msg = 'Grade '.$avg[$str_query].' sent by '.$USER->id;
     if ($debug){
       echo $msg;
       echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
@@ -405,55 +411,6 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
 
 }
 
-// if ( $USER->instructor ) {
-//   echo "This is an instructor";
-// }
-if (!$testing) {
-  if ($user != "anonymous user"){
-     $netid = substr($user,0,strpos($user,"@"));
-     if ($debug){
-       echo "<p>Logging Results for ".$problem."</p>";
-       echo "<ul>";
-       echo "<li> netid is ".$netid."</li>";
-     }
-  }
-  if (!$gradehandle = fopen(__DIR__.'/'.$gradelog,'a')){
-      echo "could not open grade log file $gradelog<P>";
-  }
-
-  if (!$handle = fopen(__DIR__.'/'.$log,'a')){
-      echo "could not open log file $log<P>";
-  }
-  else {
-     $tt = time();
-     $logentry = $user.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
-     if (!fwrite($handle,$logentry)){
-         echo "could not write to log file<P>";
-     }
-     else {
-         echo "<li>logged entry score = ".$perc."</li>";
-     }
-     if (strlen($netid) >= 1){
-         #echo "logging submission for ".$user."<P>";
-         $logentry = $netid.":".$tt.":".$ipaddress.":".$problem.":".$course.":".$perc;
-         if (!fwrite($gradehandle,$logentry)){
-  	      echo "could not write to gradelog file<P>";
-         }
-         $netdir = $gradedir."/".$netid;
-         if (!is_dir($netdir)){
-             mkdir($netdir);
-  	   #echo "creating save directory for ".$netid."<P>";
-         }
-         $probdir = $netdir."/".$problem;
-         if (!is_dir($probdir)){
-             mkdir($probdir);
-  	         echo "<li>creating save directory for ".$netid." on ".$problem."</li>";
-         }
-         echo "</ul>";
-         #copy files
-      }
-  }
-}
 #
 # This section removes files created and copied
 # for testing

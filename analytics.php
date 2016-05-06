@@ -50,12 +50,12 @@
 
   <div class="container">
     <div class="center">
-      <h1>Grades</h1>
+      <h1 style = "margin-bottom: 20px;">Analytics</h1>
     </div>
 
-    <p>
+    <!-- <p>
       Welcome to APT Analytics. Here you can visualize data on the student's APT performance.
-    </p>
+    </p> -->
 
     <!-- Toolbar -->
 
