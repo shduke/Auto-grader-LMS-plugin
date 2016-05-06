@@ -77,7 +77,7 @@ $CFG->dbprefix  = '';
 
 // This is the PW that you need to access the Administration
 // features of this application.
-$CFG->adminpw = 'Little Sir';
+$CFG->adminpw = 'admin_password';
 
 // From LTI 2.0 spec: A globally unique identifier for the service provider.
 // As a best practice, this value should match an Internet domain name
