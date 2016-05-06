@@ -29,6 +29,7 @@
         <ol class="breadcrumb">
          <li><a href="index.php">Home</a></li>
         </ol>
+        <p class="navbar-text navbar-right"><a href="gradebook.php" class="navbar-link">Gradebook</a></p>
       </div>
     </nav>
 

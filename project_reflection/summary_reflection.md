@@ -87,7 +87,7 @@ $PDOX->queryDie("INSERT INTO {$p}apt_grader
 
 ### Limitations of LTI
 
-Rather alarmingly late in the process we realized a serious flaw in our initial approach to integrating LTI into the APT grader. The LTI system can only pass **one** grade back to the gradebook per session created. Essentially only one APT could be submitted per session (although any of them could be tested regardless). To handle this we essentially assume that students can open the tool for a specific problem through Sakai and test as much as they want, but can only submit to that APT in the session. We acknowledge that this is far from ideal and is currently a limitation of LTI.
+Rather alarmingly late in the process we realized a serious flaw in our initial approach to integrating LTI into the APT grader. The LTI system can only pass **one** grade back to the gradebook per session created. Essentially only one APT could be submitted per session (although any of them could be tested regardless). To handle this we essentially hold all of the grade data on the server, only submitting back the average of the APT's the have been submitted.
 
 ### What we accomplished / What could have gone better
 

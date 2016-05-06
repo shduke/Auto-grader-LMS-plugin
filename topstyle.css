@@ -6,6 +6,10 @@ body{
     margin: 0 7px;
 }
 
+.analytics{
+  margin-right: 12px;
+}
+
 .problem{
   position: fixed;
   font-size: 16px;

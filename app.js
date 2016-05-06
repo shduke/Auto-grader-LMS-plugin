@@ -28,7 +28,3 @@ function showFailed(){
 function reset(){
   $rows.show();
 }
-
-function dismiss(){
-  document.querySelectorAll('.simple-btn')[0].parentElement.style.display = 'none';
-}

@@ -57,16 +57,12 @@ TD.hint{
           <li><a href="index.php">Home</a></li>
           <li>Submit Files</li>
         </ol>
+        <p class="navbar-text navbar-right"><a href="gradebook.php" class="navbar-link">Gradebook</a></p>
         <?php if ($USER->instructor){ ?>
-          <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link">Analytics</a></p>
+          <p class="navbar-text navbar-right"><a href="analytics.php" class="navbar-link analytics">Analytics</a> | </p>
         <?php } ?>
       </div>
     </nav>
-
-    <div class="problem center">
-      <button class = "simple-btn" onclick = "dismiss()">x</button>
-      <?php echo "Provisioned for: ".$prob_to_sub; ?>
-    </div>
 
     <div class="container">
 
@@ -171,8 +167,6 @@ for ($k=0; $k < $groupCount; $k++){
 ?>
 
   </div> <!-- Container end -->
-
-  <script src = "app.js"></script>
 
   </body>
 </html>
