@@ -4,7 +4,7 @@ _Zachary Marion, Sean Hudson_
 
 ### Initial Attempts
 
-Our initial attempts to build a Tsugi module were fraught with gaps in knowledge of both PHP and the framework itself. An early version of the autograder (which was almost entirely dismantled) parsed HTML inputed as text, found where the grade was in the text using regular expressions, and sent the grade to the Sakai gradebook over LTI. This last concept requires a bit more explanation, which will be discussed later on.
+Our initial attempts to build a Tsugi module were fraught with gaps in knowledge of both PHP and the framework itself. An early version of the autograder (which was almost entirely dismantled) parsed HTML inputted as text, found where the grade was in the text using regular expressions, and sent the grade to the Sakai gradebook over LTI. This last concept requires a bit more explanation, which will be discussed later on.
 
 ![First iteration](first_iteration.png)
 
@@ -12,9 +12,11 @@ While creating this module was helpful in gaining an understanding of LTI and Ts
 
 ### Second Iteration - Make it pretty
 
-Before receiving the APT code we had scheduled a Skype call with Dr. Charles Severance, the creator of Tsugi and an expert on LTI and LMS's. He was the one who had suggested integrating Tsugi into the existing APT code, and even created an example [github repo](https://github.com/csev/tsugi-php-standalone.git) showing how it could be done. He was quickly willing to meet again after we had received the code, and even implemented the basic LTI functionality to get us started on the project. In all our experience with Dr. Chuck (as he calls himself) has been extremely positive - his passion about LTI is infection, and had us grinning when we saw a grade being passed from the external tool into Sakai.
+Before receiving the APT code we had scheduled a Skype call with Dr. Charles Severance, the creator of Tsugi and an expert on LTI and LMS's. He was the one who had suggested integrating Tsugi into the existing APT code, and even created an example [github repo](https://github.com/csev/tsugi-php-standalone.git) showing how it could be done. He was quickly willing to meet again after we had received the code, and even implemented the basic LTI functionality to get us started on the project. Our experiences with Dr. Chuck (as he calls himself) have been extremely positive - his passion about LTI is infectious, and had us grinning when we saw a grade being passed from the external tool into Sakai.
 
 After this basic integration had been completed, the first thing we noticed - or rather remembered - was how archaic looking the APT interface was. It seemed well worth the time to upgrade the appearance of the site and add some useful features while we were at it.
+
+![APT old](oldAPT.png)
 
 The first thing we did - as any self-respecting web developer would do - was [Bootstrap](http://getbootstrap.com/) the hell out of all of the pages. For barely any changes in the HTML you get a much better looking page:
 
@@ -93,4 +95,4 @@ Rather alarmingly late in the process we realized a serious flaw in our initial 
 
 In all we believe we have significantly revamped the APT system by providing a more pleasing and functional interface for students to test their code. While sending one grade per session is not ideal, as a proof of concept it shows that LTI can be a powerful way of automating the grading of assignments, one that provides a way to easily extend the functionality of the LMS being used. While Sakai was the focus of our project as it is the LMS that Duke uses, this application should be fully compatible with just about any other LMS supporting LTI (Canvas, Blackboard, etc). This alone is a reason to consider integrating LTI in the future into more of Duke's external tools, especially as the spec continues to evolve and improve.
 
-In reflection, and as it goes with most projects, we would have benefitted from beginning actually coding earlier, rather than researching and attempting to learn PHP (of which only a minimal subset was needed). Addionally, we became quite intent on improving the UI of the APT grader, and only later realized the grading limitation (something that would have been helpful to know from day 1). Despite this, however, we believe the project went quite smoothly, and found the process to be enjoyable and informative. We look forward to seeing how Tsugi and LTI evolve as Learning Management Systems like Sakai continue to improve.
+In reflection, and as it goes with most projects, we would have benefitted from beginning actually coding earlier, rather than researching and attempting to learn PHP (of which only a minimal subset was needed). Additionally, we became quite intent on improving the UI of the APT grader, and only later realized the grading limitation (something that would have been helpful to know from day 1). Despite this, however, we believe the project went quite smoothly, and found the process to be enjoyable and informative. We look forward to seeing how Tsugi and LTI evolve as Learning Management Systems like Sakai continue to improve.
