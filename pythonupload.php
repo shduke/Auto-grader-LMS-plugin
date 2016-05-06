@@ -10,29 +10,38 @@ $LAUNCH = LTIX::session_start();
 $language = $_POST['language'];
 $problem  = $_POST['problem'];
 $course   = $_POST['course'];
+$p = $CFG->dbprefix;
+
+// get source id
+// print_r(LTIX::sessionGet('sourcedid'));
 
 ob_start();
 $user="none";
 $runs = 0;
 $runs_cookie = $problem . '_runs';
-if (isset($_COOKIE['apt'])){
-    $user=$_COOKIE['apt'];
-    if (isset($_COOKIE[$runs_cookie])){
-      $runs=$_COOKIE[$runs_cookie];
-    }
-    $runs++;
-    setcookie($runs_cookie, $runs);
+
+if (isset($_COOKIE[$runs_cookie])){
+  $runs=$_COOKIE[$runs_cookie];
+  $user=$_COOKIE[$problem];
+  $runs++;
+  setcookie($runs_cookie, $runs);
 }
 else {
+    // get the number of attempts from db
+    $attempts = $PDOX->rowDie("SELECT {$problem}_attempts FROM {$p}apt_grader
+      WHERE user_id = :UID", array(':UID' => $USER->id));
+    // if the row exists
     $runs = 1;
+    if ($attempts !== FALSE){
+      $res = $attempts[$problem."_attempts"];
+      $runs = $res + 1;
+    }
     $user="apt".rand();
-    setcookie('apt', $user, time()+60*60*5);
+    setcookie($problem, $user, time()+60*60*5);
     setcookie($runs_cookie, $runs, time()+60*60*5);
 }
 
-$p = $CFG->dbprefix;
 $displayname = !isset($USER->displayname) ? "anonymous" : $USER->displayname;
-
 
 $base = "./apt/";
 $scratch_directory = $base."incoming/";
@@ -63,8 +72,6 @@ function get_tempdir_name(){
 #    }
     return basename($tempfile);
 }
-
-
 
 // name of executable
 $execname = "runpython";
@@ -356,6 +363,9 @@ if ( isset($LAUNCH->result) /* && !$USER->instructor */) {
 
   if (!$testing){
     $retval = $LAUNCH->result->gradeSend($gradetosend);
+    $msg = 'Grade '.$gradetosend.' sent to '.$sourcedid.' by '.$USER->id;
+    echo $msg;
+
     echo("<p>Result of grade send: ");var_dump($retval);echo("</p>\n");
   }
 
