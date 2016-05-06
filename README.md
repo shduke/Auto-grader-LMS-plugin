@@ -6,6 +6,8 @@ LTI-Enabled APT GRADER
 
 Link to our [project reflection](/project_reflection/summary_reflection.md)
 
+![apt grader](tsugi_apt.png)
+
 Description
 ----------------------
 
