@@ -36,7 +36,33 @@ If you have the Tsugi management console running on the same server, you can mak
 
 With that the tool will be easily testable from the Tsugi management console.
 
-If for production purposes, you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
+If for production purposes and you need to run your application on a server without installing the Tsugi management console, see the more advanced configuration instructions below.
+
+If you are adding a new APT problem to the server, you are going to need to edit the Tester.py file to get the filter funcionality and not see the green rows before seeing the actual data results. 
+
+Modify the following lines in the file:
+
+```python
+if a == None:
+        break
+self.done = True
+sprinter.write(_TRSTART+str(count)+_TDEND)
+```
+
+```python
+elif not p.ok():
+    # printer.write(_TDFAIL+'</TR>\n')
+    sprinter.write('<TD class="fail outcome">fail</TD>'+'<TD>expected<PRE> ')
+```
+
+```python
+    sprinter.write(_TDEND+'\n')
+else:
+    correctCount += 1
+    # printer.write(_TDPASS+"\n")
+    sprinter.write('<TD class="pass outcome">pass</TD><TD>')
+    sprinter.write('got<br><PRE> ')
+```
 
 How Tsugi Uses Session
 ----------------------
